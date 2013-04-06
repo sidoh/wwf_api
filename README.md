@@ -6,7 +6,7 @@ wwf_api is a Java library that enables communication with Zynga's popular Scrabb
 
 ## Disclaimer
 
-This project is in no way associated with Zynga or any of its products.
+This project is in no way associated with or endorsed by Zynga.
 
 ## Authentication
 

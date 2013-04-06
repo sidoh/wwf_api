@@ -82,7 +82,7 @@ GameState updatedState2 = api.makeMove(accessToken, gameState2, helper.createMov
 
 The most straightforward way to do this is to construct a `Move` object. This includes the following information:
 
-1. A list of tiles that are actually played (doesn't include tiles that are included in the resulting word, but not in the play)
+1. A list of tiles that are actually played in the order that they're played. This should include *only* the tiles that are moved from the player's rack to the board.
 2. The row and column that the first tile is placed in
 3. A `WordOrientation` that specifies whether the play is vertical or horizontal (it can be either for one-letter plays).
 

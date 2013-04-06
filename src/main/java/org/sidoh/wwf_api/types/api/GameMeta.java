@@ -57,7 +57,7 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
   public long id; // required
   public boolean matchmaking; // required
   public boolean over; // required
-  public Move lastMove; // optional
+  public MoveData lastMove; // optional
   public boolean opponentPresent; // required
   public long randomSeed; // required
   public Map<Long,User> usersById; // required
@@ -177,7 +177,7 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     tmpMap.put(_Fields.OVER, new org.apache.thrift.meta_data.FieldMetaData("over", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.LAST_MOVE, new org.apache.thrift.meta_data.FieldMetaData("lastMove", org.apache.thrift.TFieldRequirementType.OPTIONAL, 
-        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Move.class)));
+        new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MoveData.class)));
     tmpMap.put(_Fields.OPPONENT_PRESENT, new org.apache.thrift.meta_data.FieldMetaData("opponentPresent", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.BOOL)));
     tmpMap.put(_Fields.RANDOM_SEED, new org.apache.thrift.meta_data.FieldMetaData("randomSeed", org.apache.thrift.TFieldRequirementType.REQUIRED, 
@@ -240,7 +240,7 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     this.matchmaking = other.matchmaking;
     this.over = other.over;
     if (other.isSetLastMove()) {
-      this.lastMove = new Move(other.lastMove);
+      this.lastMove = new MoveData(other.lastMove);
     }
     this.opponentPresent = other.opponentPresent;
     this.randomSeed = other.randomSeed;
@@ -433,11 +433,11 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     __isset_bit_vector.set(__OVER_ISSET_ID, value);
   }
 
-  public Move getLastMove() {
+  public MoveData getLastMove() {
     return this.lastMove;
   }
 
-  public GameMeta setLastMove(Move lastMove) {
+  public GameMeta setLastMove(MoveData lastMove) {
     this.lastMove = lastMove;
     return this;
   }
@@ -631,7 +631,7 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
       if (value == null) {
         unsetLastMove();
       } else {
-        setLastMove((Move)value);
+        setLastMove((MoveData)value);
       }
       break;
 
@@ -1172,7 +1172,7 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
             break;
           case 7: // LAST_MOVE
             if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
-              struct.lastMove = new Move();
+              struct.lastMove = new MoveData();
               struct.lastMove.read(iprot);
               struct.setLastMoveIsSet(true);
             } else { 
@@ -1430,7 +1430,7 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
         struct.setCurrentMoveUserIdIsSet(true);
       }
       if (incoming.get(1)) {
-        struct.lastMove = new Move();
+        struct.lastMove = new MoveData();
         struct.lastMove.read(iprot);
         struct.setLastMoveIsSet(true);
       }

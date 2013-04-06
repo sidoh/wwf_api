@@ -41,12 +41,12 @@ public class ApiServer {
 
     @Override
     public GameState getGameState(String accessToken, long gameId) throws TException {
-      return PROVIDER.getGameState(gameId, accessToken);
+      return PROVIDER.getGameState(accessToken, gameId);
     }
 
     @Override
     public GameState makeMove(String accessToken, GameState currentState, MoveSubmission move) throws TException {
-      return PROVIDER.makeMove(currentState, move, accessToken);
+      return PROVIDER.makeMove(accessToken, currentState, move );
     }
 
     @Override

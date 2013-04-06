@@ -6,6 +6,7 @@ import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
 import org.sidoh.wwf_api.types.api.GameMeta;
 import org.sidoh.wwf_api.types.api.GameState;
 import org.sidoh.wwf_api.types.api.Move;
+import org.sidoh.wwf_api.types.api.MoveData;
 import org.sidoh.wwf_api.types.api.MoveType;
 import org.sidoh.wwf_api.types.api.User;
 import org.sidoh.wwf_api.types.game_state.Tile;
@@ -65,7 +66,7 @@ public class StateReconstructor {
     User currentUser = player1;
     User otherUser = player2;
 
-    for (Move move : state.getAllMoves()) {
+    for (MoveData move : state.getAllMoves()) {
       List<Tile> playerTiles = tiles.get(currentUser.getId());
       int totalPlayedTiles = 0;
 

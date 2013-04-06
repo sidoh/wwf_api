@@ -2,6 +2,7 @@ package org.sidoh.wwf_api;
 
 import org.sidoh.wwf_api.types.api.ChatMessage;
 import org.sidoh.wwf_api.types.api.GameIndex;
+import org.sidoh.wwf_api.types.api.GameMeta;
 import org.sidoh.wwf_api.types.api.GameState;
 import org.sidoh.wwf_api.types.api.MoveSubmission;
 import org.slf4j.Logger;
@@ -31,33 +32,33 @@ public class ApiProvider {
   /**
    * Return a list of chat messages assigned to a particular game
    *
-   * @param authToken
+   * @param accessToken
    * @param gameId
    * @return
    */
-  public List<ChatMessage> getUnreadChats(String authToken, long gameId) {
-    return parser.parseUnreadChats(comm.getUnreadChats(authToken, gameId));
+  public List<ChatMessage> getUnreadChats(String accessToken, long gameId) {
+    return parser.parseUnreadChats(comm.getUnreadChats(accessToken, gameId));
   }
 
   /**
    * Get a list of games.
    *
-   * @param authToken
+   * @param accessToken
    * @return
    */
-  public GameIndex getGameIndex(String authToken) {
-    return parser.parseGameIndex(comm.getGameIndex(authToken));
+  public GameIndex getGameIndex(String accessToken) {
+    return parser.parseGameIndex(comm.getGameIndex(accessToken));
   }
 
   /**
    * Get all of the data associated with a particular game.
    *
+   * @param accessToken
    * @param gameId
-   * @param authToken
    * @return
    */
-  public GameState getGameState(long gameId, String authToken) {
-    GameState raw = parser.parseGameState(comm.getGameState(gameId, authToken));
+  public GameState getGameState(String accessToken, long gameId) {
+    GameState raw = parser.parseGameState(comm.getGameState(gameId, accessToken));
 
     return stateReconstructor.reconstructState(raw);
   }
@@ -65,77 +66,77 @@ public class ApiProvider {
   /**
    * Submit a move.
    *
+   * @param accessToken
    * @param state
    * @param move
-   * @param authToken
    * @return
    */
-  public GameState makeMove(GameState state, MoveSubmission move, String authToken) {
+  public GameState makeMove(String accessToken, GameState state, MoveSubmission move) {
     LOG.info("submitting move: " + move);
 
-    comm.makeMove(authToken, requestGenerator.generateMoveParams(state, move));
+    comm.makeMove(accessToken, requestGenerator.generateMoveParams(state, move));
 
     // TODO: can reconstruct game state without making the request
-    return getGameState(state.getId(), authToken);
+    return getGameState(accessToken, state.getId());
   }
 
   /**
    * Request the creation of a matchmaking game.
    *
-   * @param authToken
+   * @param accessToken
    */
-  public void createRandomGame(String authToken) {
+  public void createRandomGame(String accessToken) {
     LOG.info("creating random game...");
 
-    comm.createRandomGame(authToken);
+    comm.createRandomGame(accessToken);
   }
 
   /**
    * Create a game versus a person with a particular facebook Id.
    *
-   * @param authToken
+   * @param accessToken
    * @param userId
    */
-  public void createFacebookGame(String authToken, long userId) {
+  public void createFacebookGame(String accessToken, long userId) {
     LOG.info("creating game with user fb id = {}", userId);
 
-    comm.createFacebookGame(authToken, userId);
+    comm.createFacebookGame(accessToken, userId);
   }
 
   /**
    * Create a game versus a person with a particular Zynga Id.
    *
-   * @param authToken
+   * @param accessToken
    * @param userId
    */
-  public void createZyngaGame(String authToken, long userId) {
+  public void createZyngaGame(String accessToken, long userId) {
     LOG.info("creating game with user id = {}", userId);
 
-    comm.createZyngaGame(authToken, userId);
+    comm.createZyngaGame(accessToken, userId);
   }
 
   /**
    * Submit a chat message
    *
-   * @param authToken
+   * @param accessToken
    * @param gameId
    * @param message
    * @return
    */
-  public ChatMessage submitChatMessage(String authToken, long gameId, String message) {
-    return parser.parseChatMessage(comm.submitChatMessage(authToken, gameId, message));
+  public ChatMessage submitChatMessage(String accessToken, long gameId, String message) {
+    return parser.parseChatMessage(comm.submitChatMessage(accessToken, gameId, message));
   }
 
   /**
    * Check if the provided words are in the WWF dictionary
    *
-   * @param authToken
+   * @param accessToken
    * @param words
    * @return set of words that are NOT in the dictionary -- empty set if all are in the dictionary
    */
-  public Set<String> dictionaryLookup(String authToken, Set<String> words) {
+  public Set<String> dictionaryLookup(String accessToken, Set<String> words) {
     LOG.info("Checking if the following words are in the WWF dictionary: " + words);
 
-    return parser.parseDictionaryLookupResponse( comm.dictionaryLookup(words, authToken) );
+    return parser.parseDictionaryLookupResponse( comm.dictionaryLookup(words, accessToken) );
   }
 }

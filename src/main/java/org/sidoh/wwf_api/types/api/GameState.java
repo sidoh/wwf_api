@@ -52,7 +52,7 @@ public class GameState implements org.apache.thrift.TBase<GameState, GameState._
   /**
    * A list of all of the moves made.
    */
-  public List<Move> allMoves; // required
+  public List<MoveData> allMoves; // required
   /**
    * Map telling you the racks for each user (keyed by user id)
    */
@@ -192,7 +192,7 @@ public class GameState implements org.apache.thrift.TBase<GameState, GameState._
         new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64)));
     tmpMap.put(_Fields.ALL_MOVES, new org.apache.thrift.meta_data.FieldMetaData("allMoves", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
-            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, Move.class))));
+            new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, MoveData.class))));
     tmpMap.put(_Fields.RACKS, new org.apache.thrift.meta_data.FieldMetaData("racks", org.apache.thrift.TFieldRequirementType.REQUIRED, 
         new org.apache.thrift.meta_data.MapMetaData(org.apache.thrift.protocol.TType.MAP, 
             new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I64), 
@@ -222,7 +222,7 @@ public class GameState implements org.apache.thrift.TBase<GameState, GameState._
 
   public GameState(
     long id,
-    List<Move> allMoves,
+    List<MoveData> allMoves,
     Map<Long,List<org.sidoh.wwf_api.types.game_state.Tile>> racks,
     List<org.sidoh.wwf_api.types.game_state.Slot> board,
     Map<Long,Integer> scores,
@@ -250,9 +250,9 @@ public class GameState implements org.apache.thrift.TBase<GameState, GameState._
     __isset_bit_vector.or(other.__isset_bit_vector);
     this.id = other.id;
     if (other.isSetAllMoves()) {
-      List<Move> __this__allMoves = new ArrayList<Move>();
-      for (Move other_element : other.allMoves) {
-        __this__allMoves.add(new Move(other_element));
+      List<MoveData> __this__allMoves = new ArrayList<MoveData>();
+      for (MoveData other_element : other.allMoves) {
+        __this__allMoves.add(new MoveData(other_element));
       }
       this.allMoves = __this__allMoves;
     }
@@ -359,13 +359,13 @@ public class GameState implements org.apache.thrift.TBase<GameState, GameState._
     return (this.allMoves == null) ? 0 : this.allMoves.size();
   }
 
-  public java.util.Iterator<Move> getAllMovesIterator() {
+  public java.util.Iterator<MoveData> getAllMovesIterator() {
     return (this.allMoves == null) ? null : this.allMoves.iterator();
   }
 
-  public void addToAllMoves(Move elem) {
+  public void addToAllMoves(MoveData elem) {
     if (this.allMoves == null) {
-      this.allMoves = new ArrayList<Move>();
+      this.allMoves = new ArrayList<MoveData>();
     }
     this.allMoves.add(elem);
   }
@@ -373,14 +373,14 @@ public class GameState implements org.apache.thrift.TBase<GameState, GameState._
   /**
    * A list of all of the moves made.
    */
-  public List<Move> getAllMoves() {
+  public List<MoveData> getAllMoves() {
     return this.allMoves;
   }
 
   /**
    * A list of all of the moves made.
    */
-  public GameState setAllMoves(List<Move> allMoves) {
+  public GameState setAllMoves(List<MoveData> allMoves) {
     this.allMoves = allMoves;
     return this;
   }
@@ -665,7 +665,7 @@ public class GameState implements org.apache.thrift.TBase<GameState, GameState._
       if (value == null) {
         unsetAllMoves();
       } else {
-        setAllMoves((List<Move>)value);
+        setAllMoves((List<MoveData>)value);
       }
       break;
 
@@ -1115,11 +1115,11 @@ public class GameState implements org.apache.thrift.TBase<GameState, GameState._
             if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
               {
                 org.apache.thrift.protocol.TList _list42 = iprot.readListBegin();
-                struct.allMoves = new ArrayList<Move>(_list42.size);
+                struct.allMoves = new ArrayList<MoveData>(_list42.size);
                 for (int _i43 = 0; _i43 < _list42.size; ++_i43)
                 {
-                  Move _elem44; // required
-                  _elem44 = new Move();
+                  MoveData _elem44; // required
+                  _elem44 = new MoveData();
                   _elem44.read(iprot);
                   struct.allMoves.add(_elem44);
                 }
@@ -1272,7 +1272,7 @@ public class GameState implements org.apache.thrift.TBase<GameState, GameState._
         oprot.writeFieldBegin(ALL_MOVES_FIELD_DESC);
         {
           oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, struct.allMoves.size()));
-          for (Move _iter65 : struct.allMoves)
+          for (MoveData _iter65 : struct.allMoves)
           {
             _iter65.write(oprot);
           }
@@ -1374,7 +1374,7 @@ public class GameState implements org.apache.thrift.TBase<GameState, GameState._
       oprot.writeI64(struct.id);
       {
         oprot.writeI32(struct.allMoves.size());
-        for (Move _iter72 : struct.allMoves)
+        for (MoveData _iter72 : struct.allMoves)
         {
           _iter72.write(oprot);
         }
@@ -1432,11 +1432,11 @@ public class GameState implements org.apache.thrift.TBase<GameState, GameState._
       struct.setIdIsSet(true);
       {
         org.apache.thrift.protocol.TList _list79 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRUCT, iprot.readI32());
-        struct.allMoves = new ArrayList<Move>(_list79.size);
+        struct.allMoves = new ArrayList<MoveData>(_list79.size);
         for (int _i80 = 0; _i80 < _list79.size; ++_i80)
         {
-          Move _elem81; // required
-          _elem81 = new Move();
+          MoveData _elem81; // required
+          _elem81 = new MoveData();
           _elem81.read(iprot);
           struct.allMoves.add(_elem81);
         }

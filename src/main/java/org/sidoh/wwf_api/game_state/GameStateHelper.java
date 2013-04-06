@@ -70,7 +70,7 @@ public class GameStateHelper {
    * @param move
    * @return
    */
-  public MoveSubmission createMoveSubmissionFromPlay(org.sidoh.wwf_api.game_state.Move move) {
+  public MoveSubmission createMoveSubmissionFromPlay(Move move) {
     return createMoveSubmission(MoveType.PLAY)
       .setOrientation(move.getOrientation())
       .setPlayStart(new Coordinates().setX(move.getCol()).setY(move.getRow()))
@@ -94,7 +94,7 @@ public class GameStateHelper {
    * @return
    */
   public boolean gameHasPlays(GameState state) {
-    for (org.sidoh.wwf_api.types.api.Move move : state.getAllMoves()) {
+    for (MoveData move : state.getAllMoves()) {
       if (move.getMoveType() == MoveType.PLAY)
         return true;
     }
@@ -230,7 +230,7 @@ public class GameStateHelper {
    * @param move
    * @return
    */
-  public GameState applyMove(GameState state, org.sidoh.wwf_api.game_state.Move move) {
+  public GameState applyMove(GameState state, Move move) {
     GameState copy = state.deepCopy();
 
     // Make sure nothing tries to use the old state
@@ -273,8 +273,8 @@ public class GameStateHelper {
    * @param move
    * @return
    */
-  public org.sidoh.wwf_api.game_state.Move buildGameStateMove(org.sidoh.wwf_api.types.api.Move move) {
-    return new org.sidoh.wwf_api.game_state.Move(move.getTiles(),
+  public Move buildGameStateMove(MoveData move) {
+    return new Move(move.getTiles(),
       move.getPlayStartPosition().getY(),
       move.getPlayStartPosition().getX(),
       move.getPlayStartPosition().getX() < move.getPlayEndPosition().getX() ? WordOrientation.HORIZONTAL : WordOrientation.VERTICAL);

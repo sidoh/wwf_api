@@ -36,7 +36,7 @@ struct Coordinates {
  * Encapsulates metadata about a single move. This will represent moves that are
  * included as part of the game state.
  */
-struct Move {
+struct MoveData {
   1: required i32 boardChecksum,
   2: required string createdAt,
   3: optional Coordinates playStartPosition,
@@ -95,7 +95,7 @@ struct GameMeta {
   4: required i64 id,
   5: required bool matchmaking,
   6: required bool over,
-  7: optional Move lastMove,
+  7: optional MoveData lastMove,
   8: required bool opponentPresent,
   9: required i64 randomSeed,
   10: required map<i64, User> usersById,
@@ -111,7 +111,7 @@ struct GameState {
   /**
    * A list of all of the moves made.
    */
-  2: required list<Move> allMoves,
+  2: required list<MoveData> allMoves,
 
   /**
    * Map telling you the racks for each user (keyed by user id)

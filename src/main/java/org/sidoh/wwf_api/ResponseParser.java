@@ -9,6 +9,7 @@ import org.sidoh.wwf_api.types.api.GameIndex;
 import org.sidoh.wwf_api.types.api.GameMeta;
 import org.sidoh.wwf_api.types.api.GameState;
 import org.sidoh.wwf_api.types.api.Move;
+import org.sidoh.wwf_api.types.api.MoveData;
 import org.sidoh.wwf_api.types.api.MoveType;
 import org.sidoh.wwf_api.types.api.User;
 import org.slf4j.Logger;
@@ -120,7 +121,7 @@ public class ResponseParser {
     JSONArray movesArr = (JSONArray) gameJson.get("moves");
 
     state.setId(getLongValue(gameJson.get("id")));
-    state.setAllMoves(new ArrayList<Move>());
+    state.setAllMoves(new ArrayList<MoveData>());
 
     for (Object moveObj : movesArr) {
       state.addToAllMoves(parseMove((JSONObject) moveObj));
@@ -203,8 +204,8 @@ public class ResponseParser {
    * @param moveJson
    * @return
    */
-  protected Move parseMove(JSONObject moveJson) {
-    Move move = new Move();
+  protected MoveData parseMove(JSONObject moveJson) {
+    MoveData move = new MoveData();
 
     move
       .setBoardChecksum((Integer) moveJson.get("board_checksum"))

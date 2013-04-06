@@ -12,5 +12,5 @@ git add index.html
 mv $working_dir javadoc
 git add javadoc
 git commit -am "update javadoc"
-git push origin gh-pages
+git push origin gh-pages:gh-pages
 git checkout master

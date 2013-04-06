@@ -44,7 +44,7 @@ To access the game state for a particular `GameMeta` object, use the `getGameSta
 
 ```java
 ApiProvider api = new ApiProvider();
-GameIndex index = api.getGameIndex(authToken);
+GameIndex index = api.getGameIndex(accessToken);
 GameMeta firstGame = index.getGames().get(0);
 GameState state = api.getGameState(firstGame.getGameId(), accessToken);
 ```

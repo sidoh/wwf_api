@@ -52,7 +52,7 @@ public class WwfApi {
      * @param accessToken
      * @param words
      */
-    public Set<String> dictionaryLookup(String accessToken, Set<String> words) throws org.apache.thrift.TException;
+    public List<String> dictionaryLookup(String accessToken, List<String> words) throws org.apache.thrift.TException;
 
   }
 
@@ -70,7 +70,7 @@ public class WwfApi {
 
     public void getUnseenChats(String accessToken, long gameId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getUnseenChats_call> resultHandler) throws org.apache.thrift.TException;
 
-    public void dictionaryLookup(String accessToken, Set<String> words, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.dictionaryLookup_call> resultHandler) throws org.apache.thrift.TException;
+    public void dictionaryLookup(String accessToken, List<String> words, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.dictionaryLookup_call> resultHandler) throws org.apache.thrift.TException;
 
   }
 
@@ -236,13 +236,13 @@ public class WwfApi {
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getUnseenChats failed: unknown result");
     }
 
-    public Set<String> dictionaryLookup(String accessToken, Set<String> words) throws org.apache.thrift.TException
+    public List<String> dictionaryLookup(String accessToken, List<String> words) throws org.apache.thrift.TException
     {
       send_dictionaryLookup(accessToken, words);
       return recv_dictionaryLookup();
     }
 
-    public void send_dictionaryLookup(String accessToken, Set<String> words) throws org.apache.thrift.TException
+    public void send_dictionaryLookup(String accessToken, List<String> words) throws org.apache.thrift.TException
     {
       dictionaryLookup_args args = new dictionaryLookup_args();
       args.setAccessToken(accessToken);
@@ -250,7 +250,7 @@ public class WwfApi {
       sendBase("dictionaryLookup", args);
     }
 
-    public Set<String> recv_dictionaryLookup() throws org.apache.thrift.TException
+    public List<String> recv_dictionaryLookup() throws org.apache.thrift.TException
     {
       dictionaryLookup_result result = new dictionaryLookup_result();
       receiveBase(result, "dictionaryLookup");
@@ -491,7 +491,7 @@ public class WwfApi {
       }
     }
 
-    public void dictionaryLookup(String accessToken, Set<String> words, org.apache.thrift.async.AsyncMethodCallback<dictionaryLookup_call> resultHandler) throws org.apache.thrift.TException {
+    public void dictionaryLookup(String accessToken, List<String> words, org.apache.thrift.async.AsyncMethodCallback<dictionaryLookup_call> resultHandler) throws org.apache.thrift.TException {
       checkReady();
       dictionaryLookup_call method_call = new dictionaryLookup_call(accessToken, words, resultHandler, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
@@ -500,8 +500,8 @@ public class WwfApi {
 
     public static class dictionaryLookup_call extends org.apache.thrift.async.TAsyncMethodCall {
       private String accessToken;
-      private Set<String> words;
-      public dictionaryLookup_call(String accessToken, Set<String> words, org.apache.thrift.async.AsyncMethodCallback<dictionaryLookup_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+      private List<String> words;
+      public dictionaryLookup_call(String accessToken, List<String> words, org.apache.thrift.async.AsyncMethodCallback<dictionaryLookup_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
         super(client, protocolFactory, transport, resultHandler, false);
         this.accessToken = accessToken;
         this.words = words;
@@ -516,7 +516,7 @@ public class WwfApi {
         prot.writeMessageEnd();
       }
 
-      public Set<String> getResult() throws org.apache.thrift.TException {
+      public List<String> getResult() throws org.apache.thrift.TException {
         if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
           throw new IllegalStateException("Method call not finished!");
         }
@@ -5560,7 +5560,7 @@ public class WwfApi {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("dictionaryLookup_args");
 
     private static final org.apache.thrift.protocol.TField ACCESS_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("accessToken", org.apache.thrift.protocol.TType.STRING, (short)1);
-    private static final org.apache.thrift.protocol.TField WORDS_FIELD_DESC = new org.apache.thrift.protocol.TField("words", org.apache.thrift.protocol.TType.SET, (short)2);
+    private static final org.apache.thrift.protocol.TField WORDS_FIELD_DESC = new org.apache.thrift.protocol.TField("words", org.apache.thrift.protocol.TType.LIST, (short)2);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -5569,7 +5569,7 @@ public class WwfApi {
     }
 
     public String accessToken; // required
-    public Set<String> words; // required
+    public List<String> words; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -5639,7 +5639,7 @@ public class WwfApi {
       tmpMap.put(_Fields.ACCESS_TOKEN, new org.apache.thrift.meta_data.FieldMetaData("accessToken", org.apache.thrift.TFieldRequirementType.DEFAULT, 
           new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
       tmpMap.put(_Fields.WORDS, new org.apache.thrift.meta_data.FieldMetaData("words", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.SetMetaData(org.apache.thrift.protocol.TType.SET, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
               new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(dictionaryLookup_args.class, metaDataMap);
@@ -5650,7 +5650,7 @@ public class WwfApi {
 
     public dictionaryLookup_args(
       String accessToken,
-      Set<String> words)
+      List<String> words)
     {
       this();
       this.accessToken = accessToken;
@@ -5665,7 +5665,7 @@ public class WwfApi {
         this.accessToken = other.accessToken;
       }
       if (other.isSetWords()) {
-        Set<String> __this__words = new HashSet<String>();
+        List<String> __this__words = new ArrayList<String>();
         for (String other_element : other.words) {
           __this__words.add(other_element);
         }
@@ -5717,16 +5717,16 @@ public class WwfApi {
 
     public void addToWords(String elem) {
       if (this.words == null) {
-        this.words = new HashSet<String>();
+        this.words = new ArrayList<String>();
       }
       this.words.add(elem);
     }
 
-    public Set<String> getWords() {
+    public List<String> getWords() {
       return this.words;
     }
 
-    public dictionaryLookup_args setWords(Set<String> words) {
+    public dictionaryLookup_args setWords(List<String> words) {
       this.words = words;
       return this;
     }
@@ -5760,7 +5760,7 @@ public class WwfApi {
         if (value == null) {
           unsetWords();
         } else {
-          setWords((Set<String>)value);
+          setWords((List<String>)value);
         }
         break;
 
@@ -5947,17 +5947,17 @@ public class WwfApi {
               }
               break;
             case 2: // WORDS
-              if (schemeField.type == org.apache.thrift.protocol.TType.SET) {
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TSet _set118 = iprot.readSetBegin();
-                  struct.words = new HashSet<String>(2*_set118.size);
-                  for (int _i119 = 0; _i119 < _set118.size; ++_i119)
+                  org.apache.thrift.protocol.TList _list118 = iprot.readListBegin();
+                  struct.words = new ArrayList<String>(_list118.size);
+                  for (int _i119 = 0; _i119 < _list118.size; ++_i119)
                   {
                     String _elem120; // required
                     _elem120 = iprot.readString();
                     struct.words.add(_elem120);
                   }
-                  iprot.readSetEnd();
+                  iprot.readListEnd();
                 }
                 struct.setWordsIsSet(true);
               } else { 
@@ -5987,12 +5987,12 @@ public class WwfApi {
         if (struct.words != null) {
           oprot.writeFieldBegin(WORDS_FIELD_DESC);
           {
-            oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRING, struct.words.size()));
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.words.size()));
             for (String _iter121 : struct.words)
             {
               oprot.writeString(_iter121);
             }
-            oprot.writeSetEnd();
+            oprot.writeListEnd();
           }
           oprot.writeFieldEnd();
         }
@@ -6045,9 +6045,9 @@ public class WwfApi {
         }
         if (incoming.get(1)) {
           {
-            org.apache.thrift.protocol.TSet _set123 = new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.words = new HashSet<String>(2*_set123.size);
-            for (int _i124 = 0; _i124 < _set123.size; ++_i124)
+            org.apache.thrift.protocol.TList _list123 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.words = new ArrayList<String>(_list123.size);
+            for (int _i124 = 0; _i124 < _list123.size; ++_i124)
             {
               String _elem125; // required
               _elem125 = iprot.readString();
@@ -6064,7 +6064,7 @@ public class WwfApi {
   public static class dictionaryLookup_result implements org.apache.thrift.TBase<dictionaryLookup_result, dictionaryLookup_result._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("dictionaryLookup_result");
 
-    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.SET, (short)0);
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.LIST, (short)0);
 
     private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
     static {
@@ -6072,7 +6072,7 @@ public class WwfApi {
       schemes.put(TupleScheme.class, new dictionaryLookup_resultTupleSchemeFactory());
     }
 
-    public Set<String> success; // required
+    public List<String> success; // required
 
     /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
     public enum _Fields implements org.apache.thrift.TFieldIdEnum {
@@ -6137,7 +6137,7 @@ public class WwfApi {
     static {
       Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
       tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
-          new org.apache.thrift.meta_data.SetMetaData(org.apache.thrift.protocol.TType.SET, 
+          new org.apache.thrift.meta_data.ListMetaData(org.apache.thrift.protocol.TType.LIST, 
               new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING))));
       metaDataMap = Collections.unmodifiableMap(tmpMap);
       org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(dictionaryLookup_result.class, metaDataMap);
@@ -6147,7 +6147,7 @@ public class WwfApi {
     }
 
     public dictionaryLookup_result(
-      Set<String> success)
+      List<String> success)
     {
       this();
       this.success = success;
@@ -6158,7 +6158,7 @@ public class WwfApi {
      */
     public dictionaryLookup_result(dictionaryLookup_result other) {
       if (other.isSetSuccess()) {
-        Set<String> __this__success = new HashSet<String>();
+        List<String> __this__success = new ArrayList<String>();
         for (String other_element : other.success) {
           __this__success.add(other_element);
         }
@@ -6185,16 +6185,16 @@ public class WwfApi {
 
     public void addToSuccess(String elem) {
       if (this.success == null) {
-        this.success = new HashSet<String>();
+        this.success = new ArrayList<String>();
       }
       this.success.add(elem);
     }
 
-    public Set<String> getSuccess() {
+    public List<String> getSuccess() {
       return this.success;
     }
 
-    public dictionaryLookup_result setSuccess(Set<String> success) {
+    public dictionaryLookup_result setSuccess(List<String> success) {
       this.success = success;
       return this;
     }
@@ -6220,7 +6220,7 @@ public class WwfApi {
         if (value == null) {
           unsetSuccess();
         } else {
-          setSuccess((Set<String>)value);
+          setSuccess((List<String>)value);
         }
         break;
 
@@ -6367,17 +6367,17 @@ public class WwfApi {
           }
           switch (schemeField.id) {
             case 0: // SUCCESS
-              if (schemeField.type == org.apache.thrift.protocol.TType.SET) {
+              if (schemeField.type == org.apache.thrift.protocol.TType.LIST) {
                 {
-                  org.apache.thrift.protocol.TSet _set126 = iprot.readSetBegin();
-                  struct.success = new HashSet<String>(2*_set126.size);
-                  for (int _i127 = 0; _i127 < _set126.size; ++_i127)
+                  org.apache.thrift.protocol.TList _list126 = iprot.readListBegin();
+                  struct.success = new ArrayList<String>(_list126.size);
+                  for (int _i127 = 0; _i127 < _list126.size; ++_i127)
                   {
                     String _elem128; // required
                     _elem128 = iprot.readString();
                     struct.success.add(_elem128);
                   }
-                  iprot.readSetEnd();
+                  iprot.readListEnd();
                 }
                 struct.setSuccessIsSet(true);
               } else { 
@@ -6402,12 +6402,12 @@ public class WwfApi {
         if (struct.success != null) {
           oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
           {
-            oprot.writeSetBegin(new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRING, struct.success.size()));
+            oprot.writeListBegin(new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, struct.success.size()));
             for (String _iter129 : struct.success)
             {
               oprot.writeString(_iter129);
             }
-            oprot.writeSetEnd();
+            oprot.writeListEnd();
           }
           oprot.writeFieldEnd();
         }
@@ -6450,9 +6450,9 @@ public class WwfApi {
         BitSet incoming = iprot.readBitSet(1);
         if (incoming.get(0)) {
           {
-            org.apache.thrift.protocol.TSet _set131 = new org.apache.thrift.protocol.TSet(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
-            struct.success = new HashSet<String>(2*_set131.size);
-            for (int _i132 = 0; _i132 < _set131.size; ++_i132)
+            org.apache.thrift.protocol.TList _list131 = new org.apache.thrift.protocol.TList(org.apache.thrift.protocol.TType.STRING, iprot.readI32());
+            struct.success = new ArrayList<String>(_list131.size);
+            for (int _i132 = 0; _i132 < _list131.size; ++_i132)
             {
               String _elem133; // required
               _elem133 = iprot.readString();

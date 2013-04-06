@@ -190,5 +190,5 @@ service WwfApi {
    * @param words set of words to be checked
    * @return set of words that are NOT in the WWF dictionary.
    */
-  set<string> dictionaryLookup(1: string accessToken, 2: set<string> words)
+  list<string> dictionaryLookup(1: string accessToken, 2: list<string> words)
 }

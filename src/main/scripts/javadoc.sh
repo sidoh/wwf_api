@@ -6,6 +6,7 @@ working_dir=$(mktemp -d -t javadoc.XXXXXXX)
 javadoc -d $working_dir -sourcepath src/main/java -subpackages org.sidoh -exclude ec.util:org.sidoh.wwf_api.types
 git checkout --orphan gh-pages
 git rm -rf *
+git pull
 echo '<a href="/wwf_api/javadoc">Javadoc</a>' > index.html
 git add index.html
 mv $working_dir javadoc

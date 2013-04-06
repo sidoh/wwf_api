@@ -127,7 +127,8 @@ for (ChatMessage chatMessage : unreadChats) {
     chatMessage.getCreatedAt(),
     state.getMeta().getUsersById().get(chatMessage.getUserId()).getName(),
     chatMessage.getMessage());
-}```
+}
+```
 
 ### Dictionary Lookup
 

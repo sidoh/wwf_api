@@ -13,4 +13,4 @@ mv $working_dir javadoc
 git add javadoc
 git commit -am "update javadoc"
 git push origin gh-pages
-git checkout master
+#git checkout master

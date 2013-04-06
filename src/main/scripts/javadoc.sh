@@ -12,3 +12,4 @@ git add javadoc
 git commit -am "update javadoc"
 git push origin gh-pages:gh-pages
 git checkout master
+rm -rf javadoc

@@ -157,7 +157,7 @@ If you'd like to consume this API in an environment that can't use a java librar
 
 ```bash
 mvn clean compile assembly:single
-java jar -classpath $CLASSPATH:target/wwf_api-0.1-jar-with-dependencies.jar org.sidoh.wwf_api.ApiServer 1111
+java -classpath $CLASSPATH:target/wwf_api-0.1-jar-with-dependencies.jar org.sidoh.wwf_api.ApiServer 1111
 ```
 
 You can then consume the service on port 1111. The thrift definition files are located in `./src/main/thrift`. If you'd like help setting up a thrift client in the language of your choice, please contact me and I'll do  what I can.

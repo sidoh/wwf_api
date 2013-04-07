@@ -10,3 +10,5 @@ fi
 for thrift_file in $(ls $DIR/../thrift/**.thrift); do
   thrift --gen java -out $DIR/../java $thrift_file
 done
+
+git add $DIR/../java/org/sidoh/wwf_api/types

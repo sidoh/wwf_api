@@ -1,7 +1,7 @@
 package org.sidoh.random;
 
-import org.sidoh.random.MersenneTwister;
 import junit.framework.TestCase;
+import org.sidoh.wwf_api.util.MersenneTwister;
 
 public class TestMersenneTwister extends TestCase {
   public void testWorks() {

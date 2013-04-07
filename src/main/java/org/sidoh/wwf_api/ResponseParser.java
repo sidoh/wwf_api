@@ -1,5 +1,6 @@
 package org.sidoh.wwf_api;
 
+import com.google.common.collect.Lists;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
@@ -85,7 +86,7 @@ public class ResponseParser {
    * @param response
    * @return set of words that are NOT in the dictionary -- empty set if all are in the dictionary
    */
-  public Set<String> parseDictionaryLookupResponse(Reader response) {
+  public List<String> parseDictionaryLookupResponse(Reader response) {
     Object parsedResponse = JSONValue.parse(response);
 
     // If all words in the query are present
@@ -94,7 +95,7 @@ public class ResponseParser {
     // in the dictionary.
     if ( parsedResponse instanceof JSONObject ) {
       JSONArray failedWords = (JSONArray)((JSONObject) parsedResponse).get("failed_words");
-      Set<String> words = new HashSet<String>();
+      List<String> words = Lists.newArrayList();
 
       for (Object failedWord : failedWords) {
         words.add(((String)failedWord).toUpperCase());
@@ -103,7 +104,7 @@ public class ResponseParser {
       return words;
     }
     else {
-      return Collections.emptySet();
+      return Collections.emptyList();
     }
   }
 

@@ -16,6 +16,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -100,7 +101,7 @@ public class Communication {
    * @param authToken
    * @return
    */
-  public Reader dictionaryLookup(Set<String> words, String authToken) {
+  public Reader dictionaryLookup(List<String> words, String authToken) {
     return makeRequest(getDictionaryLookupUrl(Joiner.on(';').join(words).toLowerCase()), authToken);
   }
 

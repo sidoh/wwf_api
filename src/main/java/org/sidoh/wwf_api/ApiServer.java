@@ -30,7 +30,7 @@ public class ApiServer {
     }
 
     @Override
-    public Set<String> dictionaryLookup(String accessToken, Set<String> words) throws TException {
+    public List<String> dictionaryLookup(String accessToken, List<String> words) throws TException {
       return PROVIDER.dictionaryLookup(accessToken, words);
     }
 

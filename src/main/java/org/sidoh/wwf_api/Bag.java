@@ -1,10 +1,10 @@
 package org.sidoh.wwf_api;
 
-import org.sidoh.random.MersenneTwister;
 import org.sidoh.wwf_api.game_state.TileBuilder;
 import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
 import org.sidoh.wwf_api.types.game_state.Letter;
 import org.sidoh.wwf_api.types.game_state.Tile;
+import org.sidoh.wwf_api.util.MersenneTwister;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -134,7 +134,7 @@ public class ApiProvider {
    * @param words
    * @return set of words that are NOT in the dictionary -- empty set if all are in the dictionary
    */
-  public Set<String> dictionaryLookup(String accessToken, Set<String> words) {
+  public List<String> dictionaryLookup(String accessToken, List<String> words) {
     LOG.info("Checking if the following words are in the WWF dictionary: " + words);
 
     return parser.parseDictionaryLookupResponse( comm.dictionaryLookup(words, accessToken) );

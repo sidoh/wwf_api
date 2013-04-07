@@ -146,17 +146,18 @@ The `dictionaryLookup` method accepts a set of strings (case-insensitive -- they
 // This will NOT modify the board
 Move.Result result = board.scoreMove(move);
 
-if ( api.dictionaryLookup(accessToken, new HashSet<String>(result.getResultingWords())).size() > 0 ) {
+if ( api.dictionaryLookup(accessToken, result.getResultingWords()).size() > 0 ) {
   System.out.println("Uh oh, one of these words isn't in the dictionary!"); 
 }
 ```
 
 ## Running the Thrift Server
 
-If you'd like to consume this API in an environment that can't use a java library, then you can run the [Thrift](http://thrift.apache.org/) server defined in `ApiServer`. To do this, package this project using `mvn package`. This will place a jar in `./target`. You should then be able to run the server on the command line with something like:
+If you'd like to consume this API in an environment that can't use a java library, then you can run the [Thrift](http://thrift.apache.org/) server defined in `ApiServer`. To do this, package this project using `mvn package`. This will place a jar in `./target`. To build an executable jar and run the thrift server, use the following:
 
 ```bash
-java jar -classpath $CLASSPATH:target/wwf_api-0.1.jar org.sidoh.wwf_api.ApiServer 1111
+mvn clean compile assembly:single
+java jar -classpath $CLASSPATH:target/wwf_api-0.1-jar-with-dependencies.jar org.sidoh.wwf_api.ApiServer 1111
 ```
 
 You can then consume the service on port 1111. The thrift definition files are located in `./src/main/thrift`. If you'd like help setting up a thrift client in the language of your choice, please contact me and I'll do  what I can.

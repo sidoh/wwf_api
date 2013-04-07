@@ -22,13 +22,7 @@ This project uses [Thrift](http://thrift.apache.org) for many of its data models
 
 ## Authentication
 
-All operations that communicate with Zynga require an *accessToken*. This is a session variable that allows the active user to authenticate with Zynga's servers. I haven't looked into implementing a convenient way to access this programatically, but here are steps to find your access token in Chrome (similar steps probably work for other browsers):
-
-1. If you're not already logged into Facebook, do that now.
-2. Navigate to <http://facebook.com/WordsWithFriends>.
-3. Near where the game is displayed, right click and click on "view frame source"
-4. You should see some JSON that includes the access token. [Here's an example](http://sidoh.github.io/wwf_api/img/wwf_access_token.png).
-
+All operations that communicate with Zynga require an *accessToken*. As far as I can tell, this is the oauth token assigned to Zynga by Facebook for an authenticated user. Using [HtmlUnit](http://htmlunit.sourceforge.net/), I've 
 ## Usage
 
 The API is consumable in two ways:

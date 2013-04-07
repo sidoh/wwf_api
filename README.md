@@ -14,6 +14,10 @@ You can find the generated javadoc (which should be at least mildly helpful) her
 
 <http://sidoh.github.com/wwf_api/javadoc>
 
+## Thrift Definitions
+
+This project uses [Thrift](http://thrift.apache.org) for many of its data models. To quickly review any thrift types or service definitions, you can consult the [thrift definitions](https://github.com/sidoh/wwf_api/tree/master/src/main/thrift).
+
 ## Authentication
 
 All operations that communicate with Zynga require an *accessToken*. This is a session variable that allows the active user to authenticate with Zynga's servers. I haven't looked into implementing a convenient way to access this programatically, but here are steps to find your access token in Chrome (similar steps probably work for other browsers):
@@ -146,17 +150,18 @@ The `dictionaryLookup` method accepts a set of strings (case-insensitive -- they
 // This will NOT modify the board
 Move.Result result = board.scoreMove(move);
 
-if ( api.dictionaryLookup(accessToken, new HashSet<String>(result.getResultingWords())).size() > 0 ) {
+if ( api.dictionaryLookup(accessToken, result.getResultingWords()).size() > 0 ) {
   System.out.println("Uh oh, one of these words isn't in the dictionary!"); 
 }
 ```
 
 ## Running the Thrift Server
 
-If you'd like to consume this API in an environment that can't use a java library, then you can run the [Thrift](http://thrift.apache.org/) server defined in `ApiServer`. To do this, package this project using `mvn package`. This will place a jar in `./target`. You should then be able to run the server on the command line with something like:
+If you'd like to consume this API in an environment that can't use a java library, then you can run the [Thrift](http://thrift.apache.org/) server defined in `ApiServer`. To build an executable jar and run the thrift server, use the following:
 
 ```bash
-java jar -classpath $CLASSPATH:target/wwf_api-0.1.jar org.sidoh.wwf_api.ApiServer 1111
+mvn clean compile assembly:single
+java -classpath $CLASSPATH:target/wwf_api-0.1-jar-with-dependencies.jar org.sidoh.wwf_api.ApiServer 1111
 ```
 
 You can then consume the service on port 1111. The thrift definition files are located in `./src/main/thrift`. If you'd like help setting up a thrift client in the language of your choice, please contact me and I'll do  what I can.

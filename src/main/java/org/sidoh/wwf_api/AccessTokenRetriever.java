@@ -10,13 +10,15 @@ import net.minidev.json.JSONValue;
 import sun.misc.BASE64Decoder;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Convenience class for logging into Facebook and retrieving the oauth token that WWF uses to
+ * authenticate with Facebook. This is the only session paramater necessary to interact with
+ * the WWF API.
+ */
 public class AccessTokenRetriever {
-  private final WebClient client = new WebClient(BrowserVersion.FIREFOX_2);
-
   private static final BASE64Decoder BASE_64_DECODER = new BASE64Decoder();
 
   private static final String LOGIN_FORM_ID = "login_form";
@@ -25,23 +27,40 @@ public class AccessTokenRetriever {
 
   private static final Pattern SIGNED_REQUEST_REGEX = Pattern.compile("name=\"signed_request\" value=\"[^.]+\\.([^\"]+)\"");
 
+  private static final class Context {
+    private final String username;
+    private final String password;
+    private final WebClient client;
+
+    private Context(String username, String password) {
+      this.username = username;
+      this.password = password;
+      this.client = new WebClient(BrowserVersion.FIREFOX_2);
+    }
+  }
+
   /**
-   * Retrieves the access token for a Facebook user having the provided username and password
+   * Retrieves the access token for a Facebook user having the provided username and password.
+   * This only works for users who have already authorized the WWF app within Facebook.
    *
    * @param username
    * @param password
-   * @return
+   * @return access token for the user. if user hasn't authorized WWF, this will return null.
    */
-  public synchronized String getAccessToken(String username, String password) throws IOException {
-    if ( login(username, password) ) {
+  public String getAccessToken(String username, String password) throws IOException {
+    Context callContext = new Context(username, password);
+    WebClient client = callContext.client;
+
+    if ( login(callContext) ) {
       HtmlPage result = (HtmlPage) client.getPage("https://apps.facebook.com/wordswithfriends/");
       Matcher matcher = SIGNED_REQUEST_REGEX.matcher(result.asXml());
       if ( matcher.find() ) {
         JSONObject signedObject = (JSONObject) JSONValue.parse(new String(BASE_64_DECODER.decodeBuffer(matcher.group(1))));
-        return (String)signedObject.get("oauth_token");
+        String accessToken = (String)signedObject.get("oauth_token");
+
+        return accessToken;
       }
       else {
-        System.out.println(result.asXml());
         throw new RuntimeException("Couldn't find signed request in source");
       }
     }
@@ -50,7 +69,16 @@ public class AccessTokenRetriever {
     }
   }
 
-  protected boolean login(String username, String password) throws IOException {
+  /**
+   * Login to Facebook by finding the login form on the front page, filling it out, and
+   * submitting it.
+   *
+   * @param callContext
+   * @return true if login was successful
+   * @throws IOException
+   */
+  protected boolean login(Context callContext) throws IOException {
+    WebClient client = callContext.client;
     HtmlPage loginPage = (HtmlPage)client.getPage("https://www.facebook.com/");
 
     // Find the login form and submit it
@@ -60,17 +88,32 @@ public class AccessTokenRetriever {
       throw new RuntimeException("Couldn't find login form on homepage");
     }
 
-    HtmlPage postLoginPage = submitLoginForm(username, password, loginForm);
+    HtmlPage postLoginPage = submitLoginForm(callContext, loginForm);
 
     return postLoginPage.getTitleText().equals(POST_LOGIN_PAGE_TITLE);
   }
 
-  protected HtmlPage submitLoginForm(String username, String password, HtmlForm form) throws IOException {
-    form.getInputByName("email").setValueAttribute(username);
-    form.getInputByName("pass").setValueAttribute(password);
+  /**
+   * Fill out and submit a login form
+   *
+   * @param callContext
+   * @param form
+   * @return the result of submitting the login form
+   * @throws IOException
+   */
+  protected HtmlPage submitLoginForm(Context callContext, HtmlForm form) throws IOException {
+    form.getInputByName("email").setValueAttribute(callContext.username);
+    form.getInputByName("pass").setValueAttribute(callContext.password);
     return (HtmlPage) form.getInputByValue(LOGIN_FORM_SUBMIT_BUTTON_VALUE).click();
   }
 
+  /**
+   * Find a form with a particular DOM ID.
+   *
+   * @param page
+   * @param formId
+   * @return
+   */
   protected static HtmlForm findFormById(Page page, String formId) {
     for (Object o : ((HtmlPage) page).getForms()) {
       HtmlForm form = (HtmlForm)o;

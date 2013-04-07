@@ -22,7 +22,13 @@ This project uses [Thrift](http://thrift.apache.org) for many of its data models
 
 ## Authentication
 
-All operations that communicate with Zynga require an *accessToken*. As far as I can tell, this is the oauth token assigned to Zynga by Facebook for an authenticated user. Using [HtmlUnit](http://htmlunit.sourceforge.net/), I've 
+All operations that communicate with Zynga require an *accessToken*. As far as I can tell, this is the oauth token assigned to Zynga by Facebook for an authenticated user. wwf_api includes a small helper class that uses [HtmlUnit](http://htmlunit.sourceforge.net/) to login to Facebook and extract the oauth token from WWF page. This can be done as follows:
+
+```java
+AccessTokenRetriever tokenRetriever = new AccessTokenRetriever();
+String accessToken = tokenRetriever.getAccessToken("foo@bar.com", "areallyneatpassword");
+```
+
 ## Usage
 
 The API is consumable in two ways:

@@ -1,4 +1,4 @@
-package org.sidoh;
+package org.sidoh.random;
 
 import org.sidoh.random.MersenneTwister;
 import junit.framework.TestCase;

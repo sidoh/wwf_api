@@ -10,6 +10,8 @@ import net.minidev.json.JSONValue;
 import sun.misc.BASE64Decoder;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,7 +25,6 @@ public class AccessTokenRetriever {
 
   private static final String LOGIN_FORM_ID = "login_form";
   private static final String LOGIN_FORM_SUBMIT_BUTTON_VALUE = "Log In";
-  private static final String POST_LOGIN_PAGE_TITLE = "Facebook";
 
   private static final Pattern SIGNED_REQUEST_REGEX = Pattern.compile("name=\"signed_request\" value=\"[^.]+\\.([^\"]+)\"");
 
@@ -33,6 +34,8 @@ public class AccessTokenRetriever {
     private final WebClient client;
 
     private Context(String username, String password) {
+      Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.OFF);
+
       this.username = username;
       this.password = password;
       this.client = new WebClient(BrowserVersion.FIREFOX_2);
@@ -90,7 +93,7 @@ public class AccessTokenRetriever {
 
     HtmlPage postLoginPage = submitLoginForm(callContext, loginForm);
 
-    return postLoginPage.getTitleText().equals(POST_LOGIN_PAGE_TITLE);
+    return findFormById(postLoginPage, LOGIN_FORM_ID) == null;
   }
 
   /**

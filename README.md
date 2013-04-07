@@ -10,11 +10,13 @@ This project is in no way associated with or endorsed by Zynga.
 
 ## Documentation
 
+### Javadoc 
+
 You can find the generated javadoc (which should be at least mildly helpful) here: 
 
 <http://sidoh.github.com/wwf_api/javadoc>
 
-## Thrift Definitions
+### Thrift Definitions
 
 This project uses [Thrift](http://thrift.apache.org) for many of its data models. To quickly review any thrift types or service definitions, you can consult the [thrift definitions](https://github.com/sidoh/wwf_api/tree/master/src/main/thrift).
 
@@ -25,7 +27,7 @@ All operations that communicate with Zynga require an *accessToken*. This is a s
 1. If you're not already logged into Facebook, do that now.
 2. Navigate to <http://facebook.com/WordsWithFriends>.
 3. Near where the game is displayed, right click and click on "view frame source"
-4. You should see some JSON that includes the access token. [Here's an example](http://christophermullins.net/img/wwf_access_token.png).
+4. You should see some JSON that includes the access token. [Here's an example](http://sidoh.github.io/wwf_api/img/wwf_access_token.png).
 
 ## Usage
 

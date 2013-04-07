@@ -1,4 +1,4 @@
-package ec.util;
+package org.sidoh.random;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -8,6 +8,10 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 
 /**
+ * <p>
+ *   from sidoh (chris@sidoh.org) -- I moved this to the org.sidoh package
+ *   so that everything in my maven project could live under one package.
+ * </p>
  * <h3>MersenneTwister and MersenneTwisterFast</h3>
  * <p><b>Version 17</b>, based on version MT199937(99/10/29)
  * of the Mersenne Twister algorithm found at

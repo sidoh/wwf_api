@@ -1,6 +1,6 @@
-package ec.util;
+package org.sidoh;
 
-import ec.util.MersenneTwister;
+import org.sidoh.random.MersenneTwister;
 import junit.framework.TestCase;
 
 public class TestMersenneTwister extends TestCase {

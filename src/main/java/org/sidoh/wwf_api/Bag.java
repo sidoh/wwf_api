@@ -1,6 +1,6 @@
 package org.sidoh.wwf_api;
 
-import ec.util.MersenneTwister;
+import org.sidoh.random.MersenneTwister;
 import org.sidoh.wwf_api.game_state.TileBuilder;
 import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
 import org.sidoh.wwf_api.types.game_state.Letter;

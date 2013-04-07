@@ -153,7 +153,7 @@ if ( api.dictionaryLookup(accessToken, result.getResultingWords()).size() > 0 ) 
 
 ## Running the Thrift Server
 
-If you'd like to consume this API in an environment that can't use a java library, then you can run the [Thrift](http://thrift.apache.org/) server defined in `ApiServer`. To do this, package this project using `mvn package`. This will place a jar in `./target`. To build an executable jar and run the thrift server, use the following:
+If you'd like to consume this API in an environment that can't use a java library, then you can run the [Thrift](http://thrift.apache.org/) server defined in `ApiServer`. This will place a jar in `./target`. To build an executable jar and run the thrift server, use the following:
 
 ```bash
 mvn clean compile assembly:single

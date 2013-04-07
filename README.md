@@ -14,6 +14,10 @@ You can find the generated javadoc (which should be at least mildly helpful) her
 
 <http://sidoh.github.com/wwf_api/javadoc>
 
+## Thrift Definitions
+
+This project uses [Thrift](http://thrift.apache.org) for many of its data models. To quickly review any thrift types or service definitions, you can consult the [thrift definitions](https://github.com/sidoh/wwf_api/tree/master/src/main/thrift).
+
 ## Authentication
 
 All operations that communicate with Zynga require an *accessToken*. This is a session variable that allows the active user to authenticate with Zynga's servers. I haven't looked into implementing a convenient way to access this programatically, but here are steps to find your access token in Chrome (similar steps probably work for other browsers):

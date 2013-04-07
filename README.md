@@ -10,13 +10,13 @@ This project is in no way associated with or endorsed by Zynga.
 
 ## Documentation
 
-##### Javadoc 
+### Javadoc 
 
 You can find the generated javadoc (which should be at least mildly helpful) here: 
 
 <http://sidoh.github.com/wwf_api/javadoc>
 
-##### Thrift Definitions
+### Thrift Definitions
 
 This project uses [Thrift](http://thrift.apache.org) for many of its data models. To quickly review any thrift types or service definitions, you can consult the [thrift definitions](https://github.com/sidoh/wwf_api/tree/master/src/main/thrift).
 

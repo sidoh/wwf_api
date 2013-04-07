@@ -1,4 +1,4 @@
-package org.sidoh.random;
+package org.sidoh.wwf_api.util;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;

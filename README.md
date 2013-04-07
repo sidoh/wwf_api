@@ -25,7 +25,7 @@ All operations that communicate with Zynga require an *accessToken*. This is a s
 1. If you're not already logged into Facebook, do that now.
 2. Navigate to <http://facebook.com/WordsWithFriends>.
 3. Near where the game is displayed, right click and click on "view frame source"
-4. You should see some JSON that includes the access token. [Here's an example](http://christophermullins.net/img/wwf_access_token.png).
+4. You should see some JSON that includes the access token. [Here's an example](http://sidoh.github.io/wwf_api/img/wwf_access_token.png).
 
 ## Usage
 

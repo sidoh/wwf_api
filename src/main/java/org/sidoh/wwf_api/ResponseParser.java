@@ -9,7 +9,6 @@ import org.sidoh.wwf_api.types.api.Coordinates;
 import org.sidoh.wwf_api.types.api.GameIndex;
 import org.sidoh.wwf_api.types.api.GameMeta;
 import org.sidoh.wwf_api.types.api.GameState;
-import org.sidoh.wwf_api.types.api.Move;
 import org.sidoh.wwf_api.types.api.MoveData;
 import org.sidoh.wwf_api.types.api.MoveType;
 import org.sidoh.wwf_api.types.api.User;
@@ -88,6 +87,8 @@ public class ResponseParser {
    */
   public List<String> parseDictionaryLookupResponse(Reader response) {
     Object parsedResponse = JSONValue.parse(response);
+
+    LOG.info("Dictionary lookup response - " + parsedResponse);
 
     // If all words in the query are present
     // in the dictionary, the response will be an empty JSON array. Otherwise, it'll be an

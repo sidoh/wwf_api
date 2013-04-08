@@ -102,7 +102,17 @@ public class Communication {
    * @return
    */
   public Reader dictionaryLookup(List<String> words, String authToken) {
-    return makeRequest(getDictionaryLookupUrl(Joiner.on(';').join(words).toLowerCase()), authToken);
+    String requestUrl = Joiner.on(';').join(words).toLowerCase();
+
+    // This is a bit of a silly bug on Zynga's end... if you send this request with a word list
+    // starting with "api", that word will be trimmed to not include "api". I discovered this
+    // when this call was returning with "ECE" is not a word when validating "APIECE". This is
+    // a hack to get around that problem.
+    if ( requestUrl.startsWith("api") ) {
+      requestUrl = "cat;".concat(requestUrl);
+    }
+
+    return makeRequest(getDictionaryLookupUrl(requestUrl), authToken);
   }
 
   /**

@@ -1,4 +1,4 @@
-package org.sidoh.random;
+package org.sidoh.wwf_api.util;
 
 import junit.framework.TestCase;
 import org.sidoh.wwf_api.util.MersenneTwister;

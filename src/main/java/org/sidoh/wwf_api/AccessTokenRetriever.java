@@ -7,12 +7,13 @@ import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import sun.misc.BASE64Decoder;
 
 import java.io.Console;
 import java.io.IOException;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -22,6 +23,7 @@ import java.util.regex.Pattern;
  * the WWF API.
  */
 public class AccessTokenRetriever {
+  private static final Logger LOG = LoggerFactory.getLogger(AccessTokenRetriever.class);
   private static final BASE64Decoder BASE_64_DECODER = new BASE64Decoder();
 
   private static final String LOGIN_FORM_ID = "login_form";
@@ -35,7 +37,7 @@ public class AccessTokenRetriever {
     private final WebClient client;
 
     private Context(String username, String password) {
-      Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.OFF);
+      java.util.logging.Logger.getLogger("com.gargoylesoftware.htmlunit").setLevel(Level.OFF);
 
       this.username = username;
       this.password = password;
@@ -68,7 +70,11 @@ public class AccessTokenRetriever {
     Context callContext = new Context(username, password);
     WebClient client = callContext.client;
 
+    LOG.info("Logging into facebook...");
+
     if ( login(callContext) ) {
+      LOG.info("Successfully signed in... extracting access token");
+
       HtmlPage result = (HtmlPage) client.getPage("https://apps.facebook.com/wordswithfriends/");
       Matcher matcher = SIGNED_REQUEST_REGEX.matcher(result.asXml());
       if ( matcher.find() ) {

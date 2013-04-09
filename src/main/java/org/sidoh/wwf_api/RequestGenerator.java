@@ -82,7 +82,7 @@ public class RequestGenerator {
 
     // PLAY is definitely the most complicated of the bunch...
     if (move.getType() == MoveType.PLAY) {
-      Move gameMove = buildBoardMove(move);
+      Move gameMove = stateHelper.buildGameStateMove(move);
 
       // Make move - need to do so to accurately compute checksum, etc.
       board.move(gameMove);
@@ -190,22 +190,6 @@ public class RequestGenerator {
     }
 
     return a;
-  }
-
-  /**
-   * Convenience method for constructing the game state Move rather than the MoveSubmission move (which is
-   * compatible with WordsWithFriendsBoard's move() function. This is used to generate some of the metadata
-   * needed for submitting a move with type PLAY.
-   *
-   * @param submission
-   * @return
-   */
-  protected static Move buildBoardMove(MoveSubmission submission) {
-    return new Move(
-      submission.getTilesPlayed(),
-      submission.getPlayStart().getY(),
-      submission.getPlayStart().getX(),
-      submission.getOrientation());
   }
 
   /**

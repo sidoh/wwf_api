@@ -279,4 +279,17 @@ public class GameStateHelper {
       move.getPlayStartPosition().getX(),
       move.getPlayStartPosition().getX() < move.getPlayEndPosition().getX() ? WordOrientation.HORIZONTAL : WordOrientation.VERTICAL);
   }
+
+  /**
+   * Build a game state move from a move submission
+   *
+   * @param move
+   * @return
+   */
+  public Move buildGameStateMove(MoveSubmission move) {
+    return new Move(move.getTilesPlayed(),
+      move.getPlayStart().getY(),
+      move.getPlayStart().getX(),
+      move.getOrientation());
+  }
 }

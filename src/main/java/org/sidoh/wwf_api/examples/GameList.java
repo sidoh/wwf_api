@@ -2,6 +2,7 @@ package org.sidoh.wwf_api.examples;
 
 import org.sidoh.wwf_api.AccessTokenRetriever;
 import org.sidoh.wwf_api.ApiProvider;
+import org.sidoh.wwf_api.StatefulApiProvider;
 import org.sidoh.wwf_api.game_state.GameStateHelper;
 import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
 import org.sidoh.wwf_api.types.api.GameIndex;
@@ -34,14 +35,14 @@ public class GameList {
     }
 
     // Retrieve list of games and display the game state for each
-    ApiProvider api = new ApiProvider();
+    StatefulApiProvider api = new StatefulApiProvider(accessToken);
     GameStateHelper helper = new GameStateHelper();
 
-    GameIndex index = api.getGameIndex(accessToken);
+    GameIndex index = api.getGameIndex();
     User me = index.getUser();
 
     for (GameMeta gameMeta : index.getGames()) {
-      GameState state = api.getGameState(accessToken, gameMeta.getId());
+      GameState state = api.getGameState(gameMeta.getId());
 
       User opponent = helper.getOtherUser(me, state);
 

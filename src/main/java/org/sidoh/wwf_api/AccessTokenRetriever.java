@@ -9,6 +9,7 @@ import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
 import sun.misc.BASE64Decoder;
 
+import java.io.Console;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,6 +41,19 @@ public class AccessTokenRetriever {
       this.password = password;
       this.client = new WebClient(BrowserVersion.FIREFOX_2);
     }
+  }
+
+  /**
+   * Retrieves access token by prompting user for facebook login credentials and calling
+   * getAccessToken(String, String).
+   *
+   * @return access token for user
+   */
+  public String getAccessToken() throws IOException {
+    Console console = System.console();
+
+    return getAccessToken(console.readLine("Facebook username: "),
+      String.valueOf(console.readPassword("Facebook password: ")));
   }
 
   /**

@@ -20,11 +20,8 @@ public class GameList {
 
     // Retrieve access token from facebook
     System.out.println("Before continuing, please enter your Facebook credentials.");
-    String username = console.readLine("Username: ");
-    String password = String.valueOf(console.readPassword("Password: "));
-
     AccessTokenRetriever tokenRetriever = new AccessTokenRetriever();
-    String accessToken = tokenRetriever.getAccessToken(username, password);
+    String accessToken = tokenRetriever.promptForAccessToken();
 
     if ( accessToken != null ) {
       System.out.println("Successfully retrieved access token: " + accessToken.substring(0,10) + "...");

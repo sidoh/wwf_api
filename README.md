@@ -65,8 +65,8 @@ recently. The `GameIndex` object encapsulates the information returned by this
 call.
 
 ```java
-ApiProvider api = new ApiProvider();
-GameIndex index = api.getGameIndex(accessToken);
+StatefulApiProvider api = new StatefulApiProvider(accessToken);
+GameIndex index = api.getGameIndex();
 GameMeta firstGame = index.getGames().get(0);
 ```
 
@@ -108,6 +108,15 @@ WordsWithFriendsBoard board = new WordsWithFriendsBoard(new BoardStorage(state.g
 Slot centerSlot = board.getSlot(7, 7);
 Move.Result moveResult = board.move(move); // This updates the board
 ```
+
+The return value of the `move` is a `Move.Result`, which contains some useful
+information about the move that was placed. This includes:
+
+1. The word that was formed by placing the tiles included in the corresponding
+   `Move`.
+2. The number of points earned by playing this word.
+3. A list of all of the words formed by this play. This includes words formed by
+   a parallel play.
 
 ### Making Moves
 

@@ -49,7 +49,7 @@ public class AccessTokenRetriever {
    *
    * @return access token for user
    */
-  public String getAccessToken() throws IOException {
+  public String promptForAccessToken() throws IOException {
     Console console = System.console();
 
     return getAccessToken(console.readLine("Facebook username: "),

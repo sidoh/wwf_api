@@ -36,6 +36,9 @@ the oauth token from WWF page. This can be done as follows:
 ```java
 AccessTokenRetriever tokenRetriever = new AccessTokenRetriever();
 String accessToken = tokenRetriever.getAccessToken("foo@bar.com", "areallyneatpassword");
+
+// This will prompt the user for their Facebook login credentials.
+String accessToken2 = tokenRetriever.promptForAccessToken();
 ```
 
 After retrieving an access token, you can use a `StatefulApiProvider`, which

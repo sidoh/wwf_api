@@ -88,7 +88,7 @@ public class ResponseParser {
   public List<String> parseDictionaryLookupResponse(Reader response) {
     Object parsedResponse = JSONValue.parse(response);
 
-    LOG.info("Dictionary lookup response - " + parsedResponse);
+    LOG.debug("Dictionary lookup response - " + parsedResponse);
 
     // If all words in the query are present
     // in the dictionary, the response will be an empty JSON array. Otherwise, it'll be an

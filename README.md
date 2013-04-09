@@ -114,7 +114,8 @@ information about the move that was placed. This includes:
 
 1. The word that was formed by placing the tiles included in the corresponding
    `Move`.
-2. The number of points earned by playing this word.
+2. The number of points earned by playing this word. This computation includes
+   any relevant bonuses.
 3. A list of all of the words formed by this play. This includes words formed by
    a parallel play.
 

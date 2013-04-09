@@ -96,7 +96,7 @@
         <executions>
           <execution>
             <id>attach-sources</id>
-            <phase>install</phase>
+            <phase>package</phase>
             <goals>
               <goal>jar-no-fork</goal>
             </goals>
@@ -109,7 +109,7 @@
         <executions>
           <execution>
             <id>attach-javadocs</id>
-            <phase>install</phase>
+            <phase>package</phase>
             <goals>
               <goal>jar</goal>
             </goals>
@@ -130,7 +130,7 @@
             </goals>
           </execution>
         </executions>
-    </plugin>
+      </plugin>
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>

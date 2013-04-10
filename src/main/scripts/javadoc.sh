@@ -40,6 +40,7 @@ for tag in $(echo $(git tag) HEAD); do
 done
 
 mv $tmphtml javadoc/index.html
+git add javadoc
 git commit -am "update index.html"
 git push
 git checkout master

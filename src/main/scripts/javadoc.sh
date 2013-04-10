@@ -26,6 +26,7 @@ rm -rf javadoc/HEAD
 
 for tag in $(echo $(git tag) HEAD); do
   if [ ! -e javadoc/$tag ]; then
+    git checkout master
     git checkout $tag
 
     working_dir=$(mktemp -d -t javadoc.XXXXXXX)

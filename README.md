@@ -231,3 +231,33 @@ java -classpath $CLASSPATH:target/wwf_api-0.1-jar-with-dependencies.jar org.sido
 You can then consume the service on port 1111. The thrift definition files are
 located in `./src/main/thrift`. If you'd like help setting up a thrift client
 in the language of your choice, please contact me and I'll do  what I can.
+
+## Using in a Maven Project
+
+Release versions of wwf_api is available in maven central:
+
+```xml
+<dependency>
+    <groupId>org.sidoh</groupId>
+    <artifactId>wwf_api</artifactId>
+    <version>0.2</version>
+</dependency>
+```
+
+Snapshot (development) versions are available through sonatype:
+
+```xml
+<repository>
+    <id>sonatype-oss-public</id>
+    <url>https://oss.sonatype.org/content/groups/public/</url>
+    <snapshots>
+      <enabled>true</enabled>
+    </snapshots>
+</repository>
+
+<dependency>
+    <groupId>org.sidoh</groupId>
+    <artifactId>wwf_api</artifactId>
+    <version>0.3</version>
+</dependency>
+```

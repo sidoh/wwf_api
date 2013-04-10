@@ -15,7 +15,7 @@ echo "<!DOCTYPE html?>
     <hr/>
     <ol>" > $tmphtml
 
-for tag in $(git tag); do
+for tag in $(echo $(git tag) HEAD); do
   echo "<li><a href=\"javadoc/$tag\">$tag</a></li>" >> $tmphtml
 done
 

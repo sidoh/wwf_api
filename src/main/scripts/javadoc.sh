@@ -38,3 +38,9 @@ for tag in $(echo $(git tag) HEAD); do
     git commit -am "update javadoc for $tag"
   fi
 done
+
+mv $tmphtml index.html
+git commit -am "update index.html"
+git push
+git checkout master
+rm -rf javadoc

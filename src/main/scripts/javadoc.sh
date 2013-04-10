@@ -16,7 +16,7 @@ echo "<!DOCTYPE html?>
     <ol>" > $tmphtml
 
 for tag in $(echo $(git tag) HEAD); do
-  echo "<li><a href=\"javadoc/$tag\">$tag</a></li>" >> $tmphtml
+  echo "<li><a href=\"$tag\">$tag</a></li>" >> $tmphtml
 done
 
 echo "</ol></body></html>" >> $tmphtml
@@ -39,7 +39,7 @@ for tag in $(echo $(git tag) HEAD); do
   fi
 done
 
-mv $tmphtml index.html
+mv $tmphtml javadoc/index.html
 git commit -am "update index.html"
 git push
 git checkout master

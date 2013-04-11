@@ -12,6 +12,28 @@ import java.util.List;
 
 public class GameStateHelper {
   /**
+   * Returns the rack of the player currently allowed to move.
+   *
+   * @param state
+   * @return
+   */
+  public Rack getCurrentPlayerRack(GameState state) {
+    return new Rack().setTiles(state.getRacks().get(state.getMeta().getCurrentMoveUserId()));
+  }
+
+  /**
+   * Returns the rack of the player currently awaiting their turn.
+   *
+   * @param state
+   * @return
+   */
+  public Rack getOtherPlayerRack(GameState state) {
+    User otherUser = getOtherUser(state.getMeta().getCurrentMoveUserId(), state);
+
+    return new Rack().setTiles(state.getRacks().get(otherUser.getId()));
+  }
+
+  /**
    * Given one user in the game, return the other one. If the game only has one user,
    * return null.
    *

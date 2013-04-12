@@ -6,11 +6,16 @@ import org.sidoh.wwf_api.types.game_state.Slot;
 import org.sidoh.wwf_api.types.game_state.Tile;
 import org.sidoh.wwf_api.types.game_state.WordOrientation;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 public class GameStateHelper {
+  public static final SimpleDateFormat TIMESTAMP_DATE_FORMAT
+    = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ'+00:00'", Locale.GERMANY);
+
   /**
    * Gets the score status for a GameState. This indicates whether the provided player is winning,
    * losing, or the game is tied.

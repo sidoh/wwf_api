@@ -51,30 +51,104 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     schemes.put(TupleScheme.class, new GameMetaTupleSchemeFactory());
   }
 
+  /**
+   * The date at which the game was created
+   */
   public String createdAt; // required
+  /**
+   * The Zynga user ID of the user who created the game
+   */
   public long createdByUserId; // required
+  /**
+   * The Zynga user ID of the user whose turn it currently
+   */
   public long currentMoveUserId; // optional
+  /**
+   * The ID of this game
+   */
   public long id; // required
+  /**
+   * If true, this game was created by matchmaking
+   */
   public boolean matchmaking; // required
+  /**
+   * If true, this game is over (meaning all tiles have been played, or a player has
+   * resigned).
+   */
   public boolean over; // required
+  /**
+   * Relevant move data for the last played move.
+   */
   public MoveData lastMove; // optional
+  /**
+   * It's a little unclear what this means -- probably indicates whether or not the
+   * opponent is currently online.
+   */
   public boolean opponentPresent; // required
+  /**
+   * The random seed + user actions entirely determine the game state. This is used
+   * to reconstruct tile draw orders, racks, and so on.
+   */
   public long randomSeed; // required
+  /**
+   * A map going from zynga user ID -> User object, which contains some additional
+   * data about the user.
+   */
   public Map<Long,User> usersById; // required
+  /**
+   * Contains only chats that haven't been read
+   */
   public List<Long> unreadChatIds; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * The date at which the game was created
+     */
     CREATED_AT((short)1, "createdAt"),
+    /**
+     * The Zynga user ID of the user who created the game
+     */
     CREATED_BY_USER_ID((short)2, "createdByUserId"),
+    /**
+     * The Zynga user ID of the user whose turn it currently
+     */
     CURRENT_MOVE_USER_ID((short)3, "currentMoveUserId"),
+    /**
+     * The ID of this game
+     */
     ID((short)4, "id"),
+    /**
+     * If true, this game was created by matchmaking
+     */
     MATCHMAKING((short)5, "matchmaking"),
+    /**
+     * If true, this game is over (meaning all tiles have been played, or a player has
+     * resigned).
+     */
     OVER((short)6, "over"),
+    /**
+     * Relevant move data for the last played move.
+     */
     LAST_MOVE((short)7, "lastMove"),
+    /**
+     * It's a little unclear what this means -- probably indicates whether or not the
+     * opponent is currently online.
+     */
     OPPONENT_PRESENT((short)8, "opponentPresent"),
+    /**
+     * The random seed + user actions entirely determine the game state. This is used
+     * to reconstruct tile draw orders, racks, and so on.
+     */
     RANDOM_SEED((short)9, "randomSeed"),
+    /**
+     * A map going from zynga user ID -> User object, which contains some additional
+     * data about the user.
+     */
     USERS_BY_ID((short)10, "usersById"),
+    /**
+     * Contains only chats that haven't been read
+     */
     UNREAD_CHAT_IDS((short)11, "unreadChatIds");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -294,10 +368,16 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     this.unreadChatIds = null;
   }
 
+  /**
+   * The date at which the game was created
+   */
   public String getCreatedAt() {
     return this.createdAt;
   }
 
+  /**
+   * The date at which the game was created
+   */
   public GameMeta setCreatedAt(String createdAt) {
     this.createdAt = createdAt;
     return this;
@@ -318,10 +398,16 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     }
   }
 
+  /**
+   * The Zynga user ID of the user who created the game
+   */
   public long getCreatedByUserId() {
     return this.createdByUserId;
   }
 
+  /**
+   * The Zynga user ID of the user who created the game
+   */
   public GameMeta setCreatedByUserId(long createdByUserId) {
     this.createdByUserId = createdByUserId;
     setCreatedByUserIdIsSet(true);
@@ -341,10 +427,16 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     __isset_bit_vector.set(__CREATEDBYUSERID_ISSET_ID, value);
   }
 
+  /**
+   * The Zynga user ID of the user whose turn it currently
+   */
   public long getCurrentMoveUserId() {
     return this.currentMoveUserId;
   }
 
+  /**
+   * The Zynga user ID of the user whose turn it currently
+   */
   public GameMeta setCurrentMoveUserId(long currentMoveUserId) {
     this.currentMoveUserId = currentMoveUserId;
     setCurrentMoveUserIdIsSet(true);
@@ -364,10 +456,16 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     __isset_bit_vector.set(__CURRENTMOVEUSERID_ISSET_ID, value);
   }
 
+  /**
+   * The ID of this game
+   */
   public long getId() {
     return this.id;
   }
 
+  /**
+   * The ID of this game
+   */
   public GameMeta setId(long id) {
     this.id = id;
     setIdIsSet(true);
@@ -387,10 +485,16 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     __isset_bit_vector.set(__ID_ISSET_ID, value);
   }
 
+  /**
+   * If true, this game was created by matchmaking
+   */
   public boolean isMatchmaking() {
     return this.matchmaking;
   }
 
+  /**
+   * If true, this game was created by matchmaking
+   */
   public GameMeta setMatchmaking(boolean matchmaking) {
     this.matchmaking = matchmaking;
     setMatchmakingIsSet(true);
@@ -410,10 +514,18 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     __isset_bit_vector.set(__MATCHMAKING_ISSET_ID, value);
   }
 
+  /**
+   * If true, this game is over (meaning all tiles have been played, or a player has
+   * resigned).
+   */
   public boolean isOver() {
     return this.over;
   }
 
+  /**
+   * If true, this game is over (meaning all tiles have been played, or a player has
+   * resigned).
+   */
   public GameMeta setOver(boolean over) {
     this.over = over;
     setOverIsSet(true);
@@ -433,10 +545,16 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     __isset_bit_vector.set(__OVER_ISSET_ID, value);
   }
 
+  /**
+   * Relevant move data for the last played move.
+   */
   public MoveData getLastMove() {
     return this.lastMove;
   }
 
+  /**
+   * Relevant move data for the last played move.
+   */
   public GameMeta setLastMove(MoveData lastMove) {
     this.lastMove = lastMove;
     return this;
@@ -457,10 +575,18 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     }
   }
 
+  /**
+   * It's a little unclear what this means -- probably indicates whether or not the
+   * opponent is currently online.
+   */
   public boolean isOpponentPresent() {
     return this.opponentPresent;
   }
 
+  /**
+   * It's a little unclear what this means -- probably indicates whether or not the
+   * opponent is currently online.
+   */
   public GameMeta setOpponentPresent(boolean opponentPresent) {
     this.opponentPresent = opponentPresent;
     setOpponentPresentIsSet(true);
@@ -480,10 +606,18 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     __isset_bit_vector.set(__OPPONENTPRESENT_ISSET_ID, value);
   }
 
+  /**
+   * The random seed + user actions entirely determine the game state. This is used
+   * to reconstruct tile draw orders, racks, and so on.
+   */
   public long getRandomSeed() {
     return this.randomSeed;
   }
 
+  /**
+   * The random seed + user actions entirely determine the game state. This is used
+   * to reconstruct tile draw orders, racks, and so on.
+   */
   public GameMeta setRandomSeed(long randomSeed) {
     this.randomSeed = randomSeed;
     setRandomSeedIsSet(true);
@@ -514,10 +648,18 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     this.usersById.put(key, val);
   }
 
+  /**
+   * A map going from zynga user ID -> User object, which contains some additional
+   * data about the user.
+   */
   public Map<Long,User> getUsersById() {
     return this.usersById;
   }
 
+  /**
+   * A map going from zynga user ID -> User object, which contains some additional
+   * data about the user.
+   */
   public GameMeta setUsersById(Map<Long,User> usersById) {
     this.usersById = usersById;
     return this;
@@ -553,10 +695,16 @@ public class GameMeta implements org.apache.thrift.TBase<GameMeta, GameMeta._Fie
     this.unreadChatIds.add(elem);
   }
 
+  /**
+   * Contains only chats that haven't been read
+   */
   public List<Long> getUnreadChatIds() {
     return this.unreadChatIds;
   }
 
+  /**
+   * Contains only chats that haven't been read
+   */
   public GameMeta setUnreadChatIds(List<Long> unreadChatIds) {
     this.unreadChatIds = unreadChatIds;
     return this;

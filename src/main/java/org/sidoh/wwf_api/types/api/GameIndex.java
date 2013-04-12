@@ -42,12 +42,26 @@ public class GameIndex implements org.apache.thrift.TBase<GameIndex, GameIndex._
     schemes.put(TupleScheme.class, new GameIndexTupleSchemeFactory());
   }
 
+  /**
+   * A list of games. Note that not necessarily all of these will be active (i.e., have moves
+   * pending).
+   */
   public List<GameMeta> games; // required
+  /**
+   * This corresponds to the user that requests the game index
+   */
   public User user; // required
 
   /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
   public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+    /**
+     * A list of games. Note that not necessarily all of these will be active (i.e., have moves
+     * pending).
+     */
     GAMES((short)1, "games"),
+    /**
+     * This corresponds to the user that requests the game index
+     */
     USER((short)2, "user");
 
     private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
@@ -172,10 +186,18 @@ public class GameIndex implements org.apache.thrift.TBase<GameIndex, GameIndex._
     this.games.add(elem);
   }
 
+  /**
+   * A list of games. Note that not necessarily all of these will be active (i.e., have moves
+   * pending).
+   */
   public List<GameMeta> getGames() {
     return this.games;
   }
 
+  /**
+   * A list of games. Note that not necessarily all of these will be active (i.e., have moves
+   * pending).
+   */
   public GameIndex setGames(List<GameMeta> games) {
     this.games = games;
     return this;
@@ -196,10 +218,16 @@ public class GameIndex implements org.apache.thrift.TBase<GameIndex, GameIndex._
     }
   }
 
+  /**
+   * This corresponds to the user that requests the game index
+   */
   public User getUser() {
     return this.user;
   }
 
+  /**
+   * This corresponds to the user that requests the game index
+   */
   public GameIndex setUser(User user) {
     this.user = user;
     return this;

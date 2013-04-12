@@ -16,7 +16,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -25,6 +28,9 @@ import java.util.Set;
  */
 public class Communication {
   private static final Logger LOG = LoggerFactory.getLogger(Communication.class);
+
+  private static final SimpleDateFormat ISO6801_DATE_FORMAT
+    = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ'+00:00'", Locale.GERMANY);
 
   /**
    * URL prefix used for all requests
@@ -113,6 +119,18 @@ public class Communication {
     }
 
     return makeRequest(getDictionaryLookupUrl(requestUrl), authToken);
+  }
+
+  /**
+   *
+   * @param accessToken
+   * @param timestamp
+   */
+  public Reader getGamesWithUpdates(String accessToken, int timestamp) {
+    String formattedTimestamp = ISO6801_DATE_FORMAT.format(new Date(timestamp*1000L));
+    URL url = getGamesWithUpdatesUrl(formattedTimestamp);
+
+    return makeRequest( url, accessToken );
   }
 
   /**
@@ -316,6 +334,16 @@ public class Communication {
     connection.setRequestProperty("poll_type", "timer");
     connection.setRequestProperty("User-Agent", USER_AGENT);
     connection.setRequestProperty("Referer", "https://wwf-fb.zyngawithfriends.com/");
+  }
+
+  /**
+   * Return the URL to be used when getting a partial game index
+   *
+   * @param formattedTimestamp
+   * @return
+   */
+  private static URL getGamesWithUpdatesUrl(String formattedTimestamp) {
+    return getUrl(BASE_URL + "games.json?get_current_user=true&games_since=" + urlEncodeSafe(formattedTimestamp) );
   }
 
   /**

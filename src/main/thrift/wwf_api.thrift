@@ -89,16 +89,63 @@ struct MoveSubmission {
  * Encapsulates metadata about a single game
  */
 struct GameMeta {
+  /**
+   * The date at which the game was created
+   */
   1: required string createdAt,
+
+  /**
+   * The Zynga user ID of the user who created the game
+   */
   2: required i64 createdByUserId,
+
+  /**
+   * The Zynga user ID of the user whose turn it currently
+   */
   3: optional i64 currentMoveUserId,
+
+  /**
+   * The ID of this game
+   */
   4: required i64 id,
+
+  /**
+   * If true, this game was created by matchmaking
+   */
   5: required bool matchmaking,
+
+  /**
+   * If true, this game is over (meaning all tiles have been played, or a player has
+   * resigned).
+   */
   6: required bool over,
+
+  /**
+   * Relevant move data for the last played move.
+   */
   7: optional MoveData lastMove,
+
+  /**
+   * It's a little unclear what this means -- probably indicates whether or not the
+   * opponent is currently online.
+   */
   8: required bool opponentPresent,
+
+  /**
+   * The random seed + user actions entirely determine the game state. This is used 
+   * to reconstruct tile draw orders, racks, and so on.
+   */
   9: required i64 randomSeed,
+
+  /**
+   * A map going from zynga user ID -> User object, which contains some additional
+   * data about the user.
+   */
   10: required map<i64, User> usersById,
+
+  /**
+   * Contains only chats that haven't been read
+   */
   11: required list<i64> unreadChatIds
 }
 
@@ -150,7 +197,15 @@ struct GameState {
  * Metadata about a game - includes the user ID of the person making the request.
  */
 struct GameIndex {
+  /**
+   * A list of games. Note that not necessarily all of these will be active (i.e., have moves
+   * pending).
+   */
   1: required list<GameMeta> games,
+
+  /**
+   * This corresponds to the user that requests the game index
+   */
   2: required User user
 }
 
@@ -177,11 +232,72 @@ struct NewGameParams {
 }
 
 service WwfApi {
+  /**
+   * Retrieves the full game index. The index contains metadata for each game currently visible to
+   * the user requesting it.
+   *
+   * @param accessToken
+   * @return
+   */
   GameIndex getGameIndex(1: string accessToken),
+
+  /**
+   * Retrieves a partial game index, including only data about games that have had updates since the
+   * provided timestamp.
+   *
+   * @param accessToken
+   * @param timestamp
+   * @return GameIndex with games having updates occurring after the provided timestamp
+   */
+  GameIndex getGamesWithUpdates(1: string accessToken, 2: i32 timestamp),
+
+  /**
+   * Gets the full game state for the provided game. GameState contains all information about a
+   * particular game.
+   *
+   * @param accessToken
+   * @param gameId the ID of the game being requested
+   * @return
+   */
   GameState getGameState(1: string accessToken, 2: i64 gameId),
+
+  /**
+   * Submits a move. 
+   *
+   * @param accessToken
+   * @param currentState the current game state
+   * @param move the move being submitted
+   * @return the updated game state after making the provided move
+   */
   GameState makeMove(1: string accessToken, 2: GameState currentState, 3: MoveSubmission move),
+
+  /**
+   * Creates a matchmaking game. Note that the game will immediately be visible in the index, but
+   * will not necessarily have an opponent until Zynga assigns one to the game. If inviting a user,
+   * the game should immediately have an opponent.
+   *
+   * @param accessToken
+   * @param params 
+   */
   void createMatchmakingGame(1: string accessToken, 2: NewGameParams params),
+
+  /**
+   * Send a chat message to an opponent for a particular game.
+   *
+   * @param accessToken
+   * @param gameId the game to send the chat message to
+   * @param message the message to send
+   * @return the ChatMessage object containing the message Zynga persisted
+   */
   ChatMessage sendChatMessage(1: string accessToken, 2: i64 gameId, 3: string message),
+
+  /**
+   * Gets a list of chat messages for a particular game that haven't been seen yet.
+   *
+   * @param accessToken
+   * @param gameId
+   * @return list of unseen chats for a game
+   */
   list<ChatMessage> getUnseenChats(1: string accessToken, 2: i64 gameId),
 
   /**

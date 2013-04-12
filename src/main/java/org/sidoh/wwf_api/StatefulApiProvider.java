@@ -111,4 +111,15 @@ public class StatefulApiProvider {
   public List<String> dictionaryLookup(List<String> words) {
     return PROVIDER.dictionaryLookup(accessToken, words);
   }
+
+  /**
+   * Retrieves a partial game index, including only data about games that have had updates since the
+   * provided timestamp.
+   *
+   * @param timestamp
+   * @return GameIndex with games having updates occurring after the provided timestamp
+   */
+  public GameIndex getGamesWithUpdates(int timestamp) {
+    return PROVIDER.getGamesWithUpdates(accessToken, timestamp);
+  }
 }

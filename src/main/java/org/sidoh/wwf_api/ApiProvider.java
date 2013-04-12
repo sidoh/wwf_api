@@ -139,4 +139,16 @@ public class ApiProvider {
 
     return parser.parseDictionaryLookupResponse( comm.dictionaryLookup(words, accessToken) );
   }
+
+  /**
+   * Retrieves a partial game index, including only data about games that have had updates since the
+   * provided timestamp.
+   *
+   * @param accessToken
+   * @param timestamp
+   * @return GameIndex with games having updates occurring after the provided timestamp
+   */
+  public GameIndex getGamesWithUpdates(String accessToken, int timestamp) {
+    return parser.parseGameIndex( comm.getGamesWithUpdates(accessToken, timestamp) );
+  }
 }

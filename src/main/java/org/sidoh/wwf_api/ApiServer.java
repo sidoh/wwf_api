@@ -40,6 +40,11 @@ public class ApiServer {
     }
 
     @Override
+    public GameIndex getGamesWithUpdates(String accessToken, int timestamp) throws TException {
+      return PROVIDER.getGamesWithUpdates(accessToken, timestamp);
+    }
+
+    @Override
     public GameState getGameState(String accessToken, long gameId) throws TException {
       return PROVIDER.getGameState(accessToken, gameId);
     }

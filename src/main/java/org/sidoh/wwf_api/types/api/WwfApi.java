@@ -31,16 +31,94 @@ public class WwfApi {
 
   public interface Iface {
 
+    /**
+     * Retrieves the full game index. The index contains metadata for each game currently visible to
+     * the user requesting it.
+     * 
+     * @param accessToken
+     * @return
+     * 
+     * @param accessToken
+     */
     public GameIndex getGameIndex(String accessToken) throws org.apache.thrift.TException;
 
+    /**
+     * Retrieves a partial game index, including only data about games that have had updates since the
+     * provided timestamp.
+     * 
+     * @param accessToken
+     * @param timestamp
+     * @return GameIndex with games having updates occurring after the provided timestamp
+     * 
+     * @param accessToken
+     * @param timestamp
+     */
+    public GameIndex getGamesWithUpdates(String accessToken, int timestamp) throws org.apache.thrift.TException;
+
+    /**
+     * Gets the full game state for the provided game. GameState contains all information about a
+     * particular game.
+     * 
+     * @param accessToken
+     * @param gameId the ID of the game being requested
+     * @return
+     * 
+     * @param accessToken
+     * @param gameId
+     */
     public GameState getGameState(String accessToken, long gameId) throws org.apache.thrift.TException;
 
+    /**
+     * Submits a move.
+     * 
+     * @param accessToken
+     * @param currentState the current game state
+     * @param move the move being submitted
+     * @return the updated game state after making the provided move
+     * 
+     * @param accessToken
+     * @param currentState
+     * @param move
+     */
     public GameState makeMove(String accessToken, GameState currentState, MoveSubmission move) throws org.apache.thrift.TException;
 
+    /**
+     * Creates a matchmaking game. Note that the game will immediately be visible in the index, but
+     * will not necessarily have an opponent until Zynga assigns one to the game. If inviting a user,
+     * the game should immediately have an opponent.
+     * 
+     * @param accessToken
+     * @param params
+     * 
+     * @param accessToken
+     * @param params
+     */
     public void createMatchmakingGame(String accessToken, NewGameParams params) throws org.apache.thrift.TException;
 
+    /**
+     * Send a chat message to an opponent for a particular game.
+     * 
+     * @param accessToken
+     * @param gameId the game to send the chat message to
+     * @param message the message to send
+     * @return the ChatMessage object containing the message Zynga persisted
+     * 
+     * @param accessToken
+     * @param gameId
+     * @param message
+     */
     public ChatMessage sendChatMessage(String accessToken, long gameId, String message) throws org.apache.thrift.TException;
 
+    /**
+     * Gets a list of chat messages for a particular game that haven't been seen yet.
+     * 
+     * @param accessToken
+     * @param gameId
+     * @return list of unseen chats for a game
+     * 
+     * @param accessToken
+     * @param gameId
+     */
     public List<ChatMessage> getUnseenChats(String accessToken, long gameId) throws org.apache.thrift.TException;
 
     /**
@@ -59,6 +137,8 @@ public class WwfApi {
   public interface AsyncIface {
 
     public void getGameIndex(String accessToken, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getGameIndex_call> resultHandler) throws org.apache.thrift.TException;
+
+    public void getGamesWithUpdates(String accessToken, int timestamp, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getGamesWithUpdates_call> resultHandler) throws org.apache.thrift.TException;
 
     public void getGameState(String accessToken, long gameId, org.apache.thrift.async.AsyncMethodCallback<AsyncClient.getGameState_call> resultHandler) throws org.apache.thrift.TException;
 
@@ -115,6 +195,30 @@ public class WwfApi {
         return result.success;
       }
       throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getGameIndex failed: unknown result");
+    }
+
+    public GameIndex getGamesWithUpdates(String accessToken, int timestamp) throws org.apache.thrift.TException
+    {
+      send_getGamesWithUpdates(accessToken, timestamp);
+      return recv_getGamesWithUpdates();
+    }
+
+    public void send_getGamesWithUpdates(String accessToken, int timestamp) throws org.apache.thrift.TException
+    {
+      getGamesWithUpdates_args args = new getGamesWithUpdates_args();
+      args.setAccessToken(accessToken);
+      args.setTimestamp(timestamp);
+      sendBase("getGamesWithUpdates", args);
+    }
+
+    public GameIndex recv_getGamesWithUpdates() throws org.apache.thrift.TException
+    {
+      getGamesWithUpdates_result result = new getGamesWithUpdates_result();
+      receiveBase(result, "getGamesWithUpdates");
+      if (result.isSetSuccess()) {
+        return result.success;
+      }
+      throw new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "getGamesWithUpdates failed: unknown result");
     }
 
     public GameState getGameState(String accessToken, long gameId) throws org.apache.thrift.TException
@@ -307,6 +411,41 @@ public class WwfApi {
         org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
         org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
         return (new Client(prot)).recv_getGameIndex();
+      }
+    }
+
+    public void getGamesWithUpdates(String accessToken, int timestamp, org.apache.thrift.async.AsyncMethodCallback<getGamesWithUpdates_call> resultHandler) throws org.apache.thrift.TException {
+      checkReady();
+      getGamesWithUpdates_call method_call = new getGamesWithUpdates_call(accessToken, timestamp, resultHandler, this, ___protocolFactory, ___transport);
+      this.___currentMethod = method_call;
+      ___manager.call(method_call);
+    }
+
+    public static class getGamesWithUpdates_call extends org.apache.thrift.async.TAsyncMethodCall {
+      private String accessToken;
+      private int timestamp;
+      public getGamesWithUpdates_call(String accessToken, int timestamp, org.apache.thrift.async.AsyncMethodCallback<getGamesWithUpdates_call> resultHandler, org.apache.thrift.async.TAsyncClient client, org.apache.thrift.protocol.TProtocolFactory protocolFactory, org.apache.thrift.transport.TNonblockingTransport transport) throws org.apache.thrift.TException {
+        super(client, protocolFactory, transport, resultHandler, false);
+        this.accessToken = accessToken;
+        this.timestamp = timestamp;
+      }
+
+      public void write_args(org.apache.thrift.protocol.TProtocol prot) throws org.apache.thrift.TException {
+        prot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getGamesWithUpdates", org.apache.thrift.protocol.TMessageType.CALL, 0));
+        getGamesWithUpdates_args args = new getGamesWithUpdates_args();
+        args.setAccessToken(accessToken);
+        args.setTimestamp(timestamp);
+        args.write(prot);
+        prot.writeMessageEnd();
+      }
+
+      public GameIndex getResult() throws org.apache.thrift.TException {
+        if (getState() != org.apache.thrift.async.TAsyncMethodCall.State.RESPONSE_READ) {
+          throw new IllegalStateException("Method call not finished!");
+        }
+        org.apache.thrift.transport.TMemoryInputTransport memoryTransport = new org.apache.thrift.transport.TMemoryInputTransport(getFrameBuffer().array());
+        org.apache.thrift.protocol.TProtocol prot = client.getProtocolFactory().getProtocol(memoryTransport);
+        return (new Client(prot)).recv_getGamesWithUpdates();
       }
     }
 
@@ -540,6 +679,7 @@ public class WwfApi {
 
     private static <I extends Iface> Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> getProcessMap(Map<String,  org.apache.thrift.ProcessFunction<I, ? extends  org.apache.thrift.TBase>> processMap) {
       processMap.put("getGameIndex", new getGameIndex());
+      processMap.put("getGamesWithUpdates", new getGamesWithUpdates());
       processMap.put("getGameState", new getGameState());
       processMap.put("makeMove", new makeMove());
       processMap.put("createMatchmakingGame", new createMatchmakingGame());
@@ -561,6 +701,22 @@ public class WwfApi {
       protected getGameIndex_result getResult(I iface, getGameIndex_args args) throws org.apache.thrift.TException {
         getGameIndex_result result = new getGameIndex_result();
         result.success = iface.getGameIndex(args.accessToken);
+        return result;
+      }
+    }
+
+    private static class getGamesWithUpdates<I extends Iface> extends org.apache.thrift.ProcessFunction<I, getGamesWithUpdates_args> {
+      public getGamesWithUpdates() {
+        super("getGamesWithUpdates");
+      }
+
+      protected getGamesWithUpdates_args getEmptyArgsInstance() {
+        return new getGamesWithUpdates_args();
+      }
+
+      protected getGamesWithUpdates_result getResult(I iface, getGamesWithUpdates_args args) throws org.apache.thrift.TException {
+        getGamesWithUpdates_result result = new getGamesWithUpdates_result();
+        result.success = iface.getGamesWithUpdates(args.accessToken, args.timestamp);
         return result;
       }
     }
@@ -1371,6 +1527,811 @@ public class WwfApi {
 
   }
 
+  public static class getGamesWithUpdates_args implements org.apache.thrift.TBase<getGamesWithUpdates_args, getGamesWithUpdates_args._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getGamesWithUpdates_args");
+
+    private static final org.apache.thrift.protocol.TField ACCESS_TOKEN_FIELD_DESC = new org.apache.thrift.protocol.TField("accessToken", org.apache.thrift.protocol.TType.STRING, (short)1);
+    private static final org.apache.thrift.protocol.TField TIMESTAMP_FIELD_DESC = new org.apache.thrift.protocol.TField("timestamp", org.apache.thrift.protocol.TType.I32, (short)2);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getGamesWithUpdates_argsStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getGamesWithUpdates_argsTupleSchemeFactory());
+    }
+
+    public String accessToken; // required
+    public int timestamp; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      ACCESS_TOKEN((short)1, "accessToken"),
+      TIMESTAMP((short)2, "timestamp");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 1: // ACCESS_TOKEN
+            return ACCESS_TOKEN;
+          case 2: // TIMESTAMP
+            return TIMESTAMP;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    private static final int __TIMESTAMP_ISSET_ID = 0;
+    private BitSet __isset_bit_vector = new BitSet(1);
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.ACCESS_TOKEN, new org.apache.thrift.meta_data.FieldMetaData("accessToken", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.STRING)));
+      tmpMap.put(_Fields.TIMESTAMP, new org.apache.thrift.meta_data.FieldMetaData("timestamp", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.FieldValueMetaData(org.apache.thrift.protocol.TType.I32)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getGamesWithUpdates_args.class, metaDataMap);
+    }
+
+    public getGamesWithUpdates_args() {
+    }
+
+    public getGamesWithUpdates_args(
+      String accessToken,
+      int timestamp)
+    {
+      this();
+      this.accessToken = accessToken;
+      this.timestamp = timestamp;
+      setTimestampIsSet(true);
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getGamesWithUpdates_args(getGamesWithUpdates_args other) {
+      __isset_bit_vector.clear();
+      __isset_bit_vector.or(other.__isset_bit_vector);
+      if (other.isSetAccessToken()) {
+        this.accessToken = other.accessToken;
+      }
+      this.timestamp = other.timestamp;
+    }
+
+    public getGamesWithUpdates_args deepCopy() {
+      return new getGamesWithUpdates_args(this);
+    }
+
+    @Override
+    public void clear() {
+      this.accessToken = null;
+      setTimestampIsSet(false);
+      this.timestamp = 0;
+    }
+
+    public String getAccessToken() {
+      return this.accessToken;
+    }
+
+    public getGamesWithUpdates_args setAccessToken(String accessToken) {
+      this.accessToken = accessToken;
+      return this;
+    }
+
+    public void unsetAccessToken() {
+      this.accessToken = null;
+    }
+
+    /** Returns true if field accessToken is set (has been assigned a value) and false otherwise */
+    public boolean isSetAccessToken() {
+      return this.accessToken != null;
+    }
+
+    public void setAccessTokenIsSet(boolean value) {
+      if (!value) {
+        this.accessToken = null;
+      }
+    }
+
+    public int getTimestamp() {
+      return this.timestamp;
+    }
+
+    public getGamesWithUpdates_args setTimestamp(int timestamp) {
+      this.timestamp = timestamp;
+      setTimestampIsSet(true);
+      return this;
+    }
+
+    public void unsetTimestamp() {
+      __isset_bit_vector.clear(__TIMESTAMP_ISSET_ID);
+    }
+
+    /** Returns true if field timestamp is set (has been assigned a value) and false otherwise */
+    public boolean isSetTimestamp() {
+      return __isset_bit_vector.get(__TIMESTAMP_ISSET_ID);
+    }
+
+    public void setTimestampIsSet(boolean value) {
+      __isset_bit_vector.set(__TIMESTAMP_ISSET_ID, value);
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case ACCESS_TOKEN:
+        if (value == null) {
+          unsetAccessToken();
+        } else {
+          setAccessToken((String)value);
+        }
+        break;
+
+      case TIMESTAMP:
+        if (value == null) {
+          unsetTimestamp();
+        } else {
+          setTimestamp((Integer)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case ACCESS_TOKEN:
+        return getAccessToken();
+
+      case TIMESTAMP:
+        return Integer.valueOf(getTimestamp());
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case ACCESS_TOKEN:
+        return isSetAccessToken();
+      case TIMESTAMP:
+        return isSetTimestamp();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getGamesWithUpdates_args)
+        return this.equals((getGamesWithUpdates_args)that);
+      return false;
+    }
+
+    public boolean equals(getGamesWithUpdates_args that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_accessToken = true && this.isSetAccessToken();
+      boolean that_present_accessToken = true && that.isSetAccessToken();
+      if (this_present_accessToken || that_present_accessToken) {
+        if (!(this_present_accessToken && that_present_accessToken))
+          return false;
+        if (!this.accessToken.equals(that.accessToken))
+          return false;
+      }
+
+      boolean this_present_timestamp = true;
+      boolean that_present_timestamp = true;
+      if (this_present_timestamp || that_present_timestamp) {
+        if (!(this_present_timestamp && that_present_timestamp))
+          return false;
+        if (this.timestamp != that.timestamp)
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getGamesWithUpdates_args other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getGamesWithUpdates_args typedOther = (getGamesWithUpdates_args)other;
+
+      lastComparison = Boolean.valueOf(isSetAccessToken()).compareTo(typedOther.isSetAccessToken());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetAccessToken()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.accessToken, typedOther.accessToken);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      lastComparison = Boolean.valueOf(isSetTimestamp()).compareTo(typedOther.isSetTimestamp());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetTimestamp()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.timestamp, typedOther.timestamp);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+    }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getGamesWithUpdates_args(");
+      boolean first = true;
+
+      sb.append("accessToken:");
+      if (this.accessToken == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.accessToken);
+      }
+      first = false;
+      if (!first) sb.append(", ");
+      sb.append("timestamp:");
+      sb.append(this.timestamp);
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getGamesWithUpdates_argsStandardSchemeFactory implements SchemeFactory {
+      public getGamesWithUpdates_argsStandardScheme getScheme() {
+        return new getGamesWithUpdates_argsStandardScheme();
+      }
+    }
+
+    private static class getGamesWithUpdates_argsStandardScheme extends StandardScheme<getGamesWithUpdates_args> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getGamesWithUpdates_args struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 1: // ACCESS_TOKEN
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRING) {
+                struct.accessToken = iprot.readString();
+                struct.setAccessTokenIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            case 2: // TIMESTAMP
+              if (schemeField.type == org.apache.thrift.protocol.TType.I32) {
+                struct.timestamp = iprot.readI32();
+                struct.setTimestampIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getGamesWithUpdates_args struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.accessToken != null) {
+          oprot.writeFieldBegin(ACCESS_TOKEN_FIELD_DESC);
+          oprot.writeString(struct.accessToken);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldBegin(TIMESTAMP_FIELD_DESC);
+        oprot.writeI32(struct.timestamp);
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getGamesWithUpdates_argsTupleSchemeFactory implements SchemeFactory {
+      public getGamesWithUpdates_argsTupleScheme getScheme() {
+        return new getGamesWithUpdates_argsTupleScheme();
+      }
+    }
+
+    private static class getGamesWithUpdates_argsTupleScheme extends TupleScheme<getGamesWithUpdates_args> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getGamesWithUpdates_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetAccessToken()) {
+          optionals.set(0);
+        }
+        if (struct.isSetTimestamp()) {
+          optionals.set(1);
+        }
+        oprot.writeBitSet(optionals, 2);
+        if (struct.isSetAccessToken()) {
+          oprot.writeString(struct.accessToken);
+        }
+        if (struct.isSetTimestamp()) {
+          oprot.writeI32(struct.timestamp);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getGamesWithUpdates_args struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(2);
+        if (incoming.get(0)) {
+          struct.accessToken = iprot.readString();
+          struct.setAccessTokenIsSet(true);
+        }
+        if (incoming.get(1)) {
+          struct.timestamp = iprot.readI32();
+          struct.setTimestampIsSet(true);
+        }
+      }
+    }
+
+  }
+
+  public static class getGamesWithUpdates_result implements org.apache.thrift.TBase<getGamesWithUpdates_result, getGamesWithUpdates_result._Fields>, java.io.Serializable, Cloneable   {
+    private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getGamesWithUpdates_result");
+
+    private static final org.apache.thrift.protocol.TField SUCCESS_FIELD_DESC = new org.apache.thrift.protocol.TField("success", org.apache.thrift.protocol.TType.STRUCT, (short)0);
+
+    private static final Map<Class<? extends IScheme>, SchemeFactory> schemes = new HashMap<Class<? extends IScheme>, SchemeFactory>();
+    static {
+      schemes.put(StandardScheme.class, new getGamesWithUpdates_resultStandardSchemeFactory());
+      schemes.put(TupleScheme.class, new getGamesWithUpdates_resultTupleSchemeFactory());
+    }
+
+    public GameIndex success; // required
+
+    /** The set of fields this struct contains, along with convenience methods for finding and manipulating them. */
+    public enum _Fields implements org.apache.thrift.TFieldIdEnum {
+      SUCCESS((short)0, "success");
+
+      private static final Map<String, _Fields> byName = new HashMap<String, _Fields>();
+
+      static {
+        for (_Fields field : EnumSet.allOf(_Fields.class)) {
+          byName.put(field.getFieldName(), field);
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, or null if its not found.
+       */
+      public static _Fields findByThriftId(int fieldId) {
+        switch(fieldId) {
+          case 0: // SUCCESS
+            return SUCCESS;
+          default:
+            return null;
+        }
+      }
+
+      /**
+       * Find the _Fields constant that matches fieldId, throwing an exception
+       * if it is not found.
+       */
+      public static _Fields findByThriftIdOrThrow(int fieldId) {
+        _Fields fields = findByThriftId(fieldId);
+        if (fields == null) throw new IllegalArgumentException("Field " + fieldId + " doesn't exist!");
+        return fields;
+      }
+
+      /**
+       * Find the _Fields constant that matches name, or null if its not found.
+       */
+      public static _Fields findByName(String name) {
+        return byName.get(name);
+      }
+
+      private final short _thriftId;
+      private final String _fieldName;
+
+      _Fields(short thriftId, String fieldName) {
+        _thriftId = thriftId;
+        _fieldName = fieldName;
+      }
+
+      public short getThriftFieldId() {
+        return _thriftId;
+      }
+
+      public String getFieldName() {
+        return _fieldName;
+      }
+    }
+
+    // isset id assignments
+    public static final Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> metaDataMap;
+    static {
+      Map<_Fields, org.apache.thrift.meta_data.FieldMetaData> tmpMap = new EnumMap<_Fields, org.apache.thrift.meta_data.FieldMetaData>(_Fields.class);
+      tmpMap.put(_Fields.SUCCESS, new org.apache.thrift.meta_data.FieldMetaData("success", org.apache.thrift.TFieldRequirementType.DEFAULT, 
+          new org.apache.thrift.meta_data.StructMetaData(org.apache.thrift.protocol.TType.STRUCT, GameIndex.class)));
+      metaDataMap = Collections.unmodifiableMap(tmpMap);
+      org.apache.thrift.meta_data.FieldMetaData.addStructMetaDataMap(getGamesWithUpdates_result.class, metaDataMap);
+    }
+
+    public getGamesWithUpdates_result() {
+    }
+
+    public getGamesWithUpdates_result(
+      GameIndex success)
+    {
+      this();
+      this.success = success;
+    }
+
+    /**
+     * Performs a deep copy on <i>other</i>.
+     */
+    public getGamesWithUpdates_result(getGamesWithUpdates_result other) {
+      if (other.isSetSuccess()) {
+        this.success = new GameIndex(other.success);
+      }
+    }
+
+    public getGamesWithUpdates_result deepCopy() {
+      return new getGamesWithUpdates_result(this);
+    }
+
+    @Override
+    public void clear() {
+      this.success = null;
+    }
+
+    public GameIndex getSuccess() {
+      return this.success;
+    }
+
+    public getGamesWithUpdates_result setSuccess(GameIndex success) {
+      this.success = success;
+      return this;
+    }
+
+    public void unsetSuccess() {
+      this.success = null;
+    }
+
+    /** Returns true if field success is set (has been assigned a value) and false otherwise */
+    public boolean isSetSuccess() {
+      return this.success != null;
+    }
+
+    public void setSuccessIsSet(boolean value) {
+      if (!value) {
+        this.success = null;
+      }
+    }
+
+    public void setFieldValue(_Fields field, Object value) {
+      switch (field) {
+      case SUCCESS:
+        if (value == null) {
+          unsetSuccess();
+        } else {
+          setSuccess((GameIndex)value);
+        }
+        break;
+
+      }
+    }
+
+    public Object getFieldValue(_Fields field) {
+      switch (field) {
+      case SUCCESS:
+        return getSuccess();
+
+      }
+      throw new IllegalStateException();
+    }
+
+    /** Returns true if field corresponding to fieldID is set (has been assigned a value) and false otherwise */
+    public boolean isSet(_Fields field) {
+      if (field == null) {
+        throw new IllegalArgumentException();
+      }
+
+      switch (field) {
+      case SUCCESS:
+        return isSetSuccess();
+      }
+      throw new IllegalStateException();
+    }
+
+    @Override
+    public boolean equals(Object that) {
+      if (that == null)
+        return false;
+      if (that instanceof getGamesWithUpdates_result)
+        return this.equals((getGamesWithUpdates_result)that);
+      return false;
+    }
+
+    public boolean equals(getGamesWithUpdates_result that) {
+      if (that == null)
+        return false;
+
+      boolean this_present_success = true && this.isSetSuccess();
+      boolean that_present_success = true && that.isSetSuccess();
+      if (this_present_success || that_present_success) {
+        if (!(this_present_success && that_present_success))
+          return false;
+        if (!this.success.equals(that.success))
+          return false;
+      }
+
+      return true;
+    }
+
+    @Override
+    public int hashCode() {
+      return 0;
+    }
+
+    public int compareTo(getGamesWithUpdates_result other) {
+      if (!getClass().equals(other.getClass())) {
+        return getClass().getName().compareTo(other.getClass().getName());
+      }
+
+      int lastComparison = 0;
+      getGamesWithUpdates_result typedOther = (getGamesWithUpdates_result)other;
+
+      lastComparison = Boolean.valueOf(isSetSuccess()).compareTo(typedOther.isSetSuccess());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      if (isSetSuccess()) {
+        lastComparison = org.apache.thrift.TBaseHelper.compareTo(this.success, typedOther.success);
+        if (lastComparison != 0) {
+          return lastComparison;
+        }
+      }
+      return 0;
+    }
+
+    public _Fields fieldForId(int fieldId) {
+      return _Fields.findByThriftId(fieldId);
+    }
+
+    public void read(org.apache.thrift.protocol.TProtocol iprot) throws org.apache.thrift.TException {
+      schemes.get(iprot.getScheme()).getScheme().read(iprot, this);
+    }
+
+    public void write(org.apache.thrift.protocol.TProtocol oprot) throws org.apache.thrift.TException {
+      schemes.get(oprot.getScheme()).getScheme().write(oprot, this);
+      }
+
+    @Override
+    public String toString() {
+      StringBuilder sb = new StringBuilder("getGamesWithUpdates_result(");
+      boolean first = true;
+
+      sb.append("success:");
+      if (this.success == null) {
+        sb.append("null");
+      } else {
+        sb.append(this.success);
+      }
+      first = false;
+      sb.append(")");
+      return sb.toString();
+    }
+
+    public void validate() throws org.apache.thrift.TException {
+      // check for required fields
+    }
+
+    private void writeObject(java.io.ObjectOutputStream out) throws java.io.IOException {
+      try {
+        write(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(out)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
+      try {
+        read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
+      } catch (org.apache.thrift.TException te) {
+        throw new java.io.IOException(te);
+      }
+    }
+
+    private static class getGamesWithUpdates_resultStandardSchemeFactory implements SchemeFactory {
+      public getGamesWithUpdates_resultStandardScheme getScheme() {
+        return new getGamesWithUpdates_resultStandardScheme();
+      }
+    }
+
+    private static class getGamesWithUpdates_resultStandardScheme extends StandardScheme<getGamesWithUpdates_result> {
+
+      public void read(org.apache.thrift.protocol.TProtocol iprot, getGamesWithUpdates_result struct) throws org.apache.thrift.TException {
+        org.apache.thrift.protocol.TField schemeField;
+        iprot.readStructBegin();
+        while (true)
+        {
+          schemeField = iprot.readFieldBegin();
+          if (schemeField.type == org.apache.thrift.protocol.TType.STOP) { 
+            break;
+          }
+          switch (schemeField.id) {
+            case 0: // SUCCESS
+              if (schemeField.type == org.apache.thrift.protocol.TType.STRUCT) {
+                struct.success = new GameIndex();
+                struct.success.read(iprot);
+                struct.setSuccessIsSet(true);
+              } else { 
+                org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+              }
+              break;
+            default:
+              org.apache.thrift.protocol.TProtocolUtil.skip(iprot, schemeField.type);
+          }
+          iprot.readFieldEnd();
+        }
+        iprot.readStructEnd();
+
+        // check for required fields of primitive type, which can't be checked in the validate method
+        struct.validate();
+      }
+
+      public void write(org.apache.thrift.protocol.TProtocol oprot, getGamesWithUpdates_result struct) throws org.apache.thrift.TException {
+        struct.validate();
+
+        oprot.writeStructBegin(STRUCT_DESC);
+        if (struct.success != null) {
+          oprot.writeFieldBegin(SUCCESS_FIELD_DESC);
+          struct.success.write(oprot);
+          oprot.writeFieldEnd();
+        }
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+      }
+
+    }
+
+    private static class getGamesWithUpdates_resultTupleSchemeFactory implements SchemeFactory {
+      public getGamesWithUpdates_resultTupleScheme getScheme() {
+        return new getGamesWithUpdates_resultTupleScheme();
+      }
+    }
+
+    private static class getGamesWithUpdates_resultTupleScheme extends TupleScheme<getGamesWithUpdates_result> {
+
+      @Override
+      public void write(org.apache.thrift.protocol.TProtocol prot, getGamesWithUpdates_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol oprot = (TTupleProtocol) prot;
+        BitSet optionals = new BitSet();
+        if (struct.isSetSuccess()) {
+          optionals.set(0);
+        }
+        oprot.writeBitSet(optionals, 1);
+        if (struct.isSetSuccess()) {
+          struct.success.write(oprot);
+        }
+      }
+
+      @Override
+      public void read(org.apache.thrift.protocol.TProtocol prot, getGamesWithUpdates_result struct) throws org.apache.thrift.TException {
+        TTupleProtocol iprot = (TTupleProtocol) prot;
+        BitSet incoming = iprot.readBitSet(1);
+        if (incoming.get(0)) {
+          struct.success = new GameIndex();
+          struct.success.read(iprot);
+          struct.setSuccessIsSet(true);
+        }
+      }
+    }
+
+  }
+
   public static class getGameState_args implements org.apache.thrift.TBase<getGameState_args, getGameState_args._Fields>, java.io.Serializable, Cloneable   {
     private static final org.apache.thrift.protocol.TStruct STRUCT_DESC = new org.apache.thrift.protocol.TStruct("getGameState_args");
 
@@ -1708,8 +2669,6 @@ public class WwfApi {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
-        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-        __isset_bit_vector = new BitSet(1);
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);
@@ -4204,8 +5163,6 @@ public class WwfApi {
 
     private void readObject(java.io.ObjectInputStream in) throws java.io.IOException, ClassNotFoundException {
       try {
-        // it doesn't seem like you should have to do this, but java serialization is wacky, and doesn't call the default constructor.
-        __isset_bit_vector = new BitSet(1);
         read(new org.apache.thrift.protocol.TCompactProtocol(new org.apache.thrift.transport.TIOStreamTransport(in)));
       } catch (org.apache.thrift.TException te) {
         throw new java.io.IOException(te);

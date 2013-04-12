@@ -6,6 +6,7 @@ import org.sidoh.wwf_api.types.game_state.Slot;
 import org.sidoh.wwf_api.types.game_state.Tile;
 import org.sidoh.wwf_api.types.game_state.WordOrientation;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -15,6 +16,21 @@ import java.util.Locale;
 public class GameStateHelper {
   public static final SimpleDateFormat TIMESTAMP_DATE_FORMAT
     = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ'+00:00'", Locale.GERMANY);
+
+  /**
+   * Compute the number of seconds elapsed since the specified timestamp
+   *
+   * @param timestamp
+   * @return
+   */
+  public int getNumSecondsEllapsedSinceTimestamp(String timestamp) {
+    try {
+      return (int) ((System.currentTimeMillis() - TIMESTAMP_DATE_FORMAT.parse(timestamp).getTime())/1000L);
+    }
+    catch (ParseException e) {
+      throw new RuntimeException("Couldn't parse timestamp: " + timestamp, e);
+    }
+  }
 
   /**
    * Gets the score status for a GameState. This indicates whether the provided player is winning,

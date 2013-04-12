@@ -12,6 +12,41 @@ import java.util.List;
 
 public class GameStateHelper {
   /**
+   * Gets the score status for a GameState. This indicates whether the provided player is winning,
+   * losing, or the game is tied.
+   *
+   * @param user
+   * @param state
+   * @return
+   */
+  public GameScoreStatus getScoreStatus(User user, GameState state) {
+    int myScore = getScore(user, state);
+    int otherScore = getScore(getOtherUser(user, state), state);
+
+    if ( myScore == otherScore ) {
+      return GameScoreStatus.TIED;
+    }
+    else if ( myScore < otherScore ) {
+      return GameScoreStatus.LOSING;
+    }
+    else {
+      return GameScoreStatus.WINNING;
+    }
+  }
+
+  /**
+   * Gets the score status for a GameState. This indicates whether the provided player is winning,
+   * losing, or the game is tied.
+   *
+   * @param userId
+   * @param state
+   * @return
+   */
+  public GameScoreStatus getScoreStatus(long userId, GameState state) {
+    return getScoreStatus(state.getMeta().getUsersById().get(userId), state);
+  }
+
+  /**
    * Returns the rack of the player currently allowed to move.
    *
    * @param state

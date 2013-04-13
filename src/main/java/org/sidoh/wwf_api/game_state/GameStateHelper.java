@@ -15,7 +15,7 @@ import java.util.Locale;
 
 public class GameStateHelper {
   public static final SimpleDateFormat TIMESTAMP_DATE_FORMAT
-    = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ'+00:00'", Locale.GERMANY);
+    = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'", Locale.GERMANY);
 
   /**
    * Compute the number of seconds elapsed since the specified timestamp

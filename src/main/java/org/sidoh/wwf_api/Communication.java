@@ -252,7 +252,6 @@ public class Communication {
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
         String line = reader.readLine();
-
         while (line != null) {
           LOG.info(line);
           line = reader.readLine();

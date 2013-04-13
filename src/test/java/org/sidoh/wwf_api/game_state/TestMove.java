@@ -10,7 +10,7 @@ import java.util.Set;
 
 public class TestMove extends WwfApiTestCase {
   public void testEquals() {
-    Move move1 = new Move(
+    Move move1 = Move.play(
       Arrays.asList(
         TileBuilder.getTile("B", 1),
         TileBuilder.getTile("O", 2),
@@ -19,7 +19,7 @@ public class TestMove extends WwfApiTestCase {
       7, 7,
       WordOrientation.HORIZONTAL
     );
-    Move move2 = new Move(
+    Move move2 = Move.play(
       Arrays.asList(
         TileBuilder.getTile("B", 6),
         TileBuilder.getTile("O", 8),

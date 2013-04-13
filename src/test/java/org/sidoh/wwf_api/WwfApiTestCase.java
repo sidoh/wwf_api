@@ -54,10 +54,10 @@ public class WwfApiTestCase extends TestCase {
     Move.Result result;
 
     if (keep) {
-      result = board.move(new Move(letters, row, col, orientation));
+      result = board.move(Move.play(letters, row, col, orientation));
     }
     else {
-      result = board.scoreMove(new Move(letters, row, col, orientation));
+      result = board.scoreMove(Move.play(letters, row, col, orientation));
     }
 
     return result;

@@ -149,10 +149,18 @@ public class GameStateHelper {
    * @return
    */
   public MoveSubmission createMoveSubmissionFromPlay(Move move) {
-    return createMoveSubmission(MoveType.PLAY)
-      .setOrientation(move.getOrientation())
-      .setPlayStart(new Coordinates().setX(move.getCol()).setY(move.getRow()))
-      .setTilesPlayed(move.getTiles());
+    MoveSubmission moveSubmission = createMoveSubmission(move.getMoveType());
+
+    if ( move.getMoveType() == MoveType.SWAP || move.getMoveType() == MoveType.PLAY ) {
+      moveSubmission.setTilesPlayed(move.getTiles());
+    }
+    else {
+      moveSubmission
+        .setOrientation(move.getOrientation())
+        .setPlayStart(new Coordinates().setX(move.getCol()).setY(move.getRow()));
+    }
+
+    return moveSubmission;
   }
 
   /**
@@ -352,7 +360,7 @@ public class GameStateHelper {
    * @return
    */
   public Move buildGameStateMove(MoveData move) {
-    return new Move(move.getTiles(),
+    return Move.play(move.getTiles(),
       move.getPlayStartPosition().getY(),
       move.getPlayStartPosition().getX(),
       move.getPlayStartPosition().getX() < move.getPlayEndPosition().getX() ? WordOrientation.HORIZONTAL : WordOrientation.VERTICAL);
@@ -365,7 +373,7 @@ public class GameStateHelper {
    * @return
    */
   public Move buildGameStateMove(MoveSubmission move) {
-    return new Move(move.getTilesPlayed(),
+    return Move.play(move.getTilesPlayed(),
       move.getPlayStart().getY(),
       move.getPlayStart().getX(),
       move.getOrientation());

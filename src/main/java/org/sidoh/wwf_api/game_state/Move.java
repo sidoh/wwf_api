@@ -1,5 +1,6 @@
 package org.sidoh.wwf_api.game_state;
 
+import org.sidoh.wwf_api.types.api.MoveType;
 import org.sidoh.wwf_api.types.game_state.Letter;
 import org.sidoh.wwf_api.types.game_state.Tile;
 import org.sidoh.wwf_api.types.game_state.WordOrientation;
@@ -14,16 +15,22 @@ public class Move {
   private final int col;
   private final WordOrientation orientation;
   private Result result;
+  private final MoveType type;
 
-  public Move(List<Tile> tiles, int row, int col, WordOrientation orientation) {
+  private Move(MoveType type, List<Tile> tiles, int row, int col, WordOrientation orientation) {
+    this.type = type;
     this.tiles = new LinkedList<Tile>(tiles);
     this.row = row;
     this.col = col;
     this.orientation = orientation;
   }
 
+  public MoveType getMoveType() {
+    return type;
+  }
+
   public Move clone() {
-    return new Move(tiles, row, col, orientation);
+    return new Move(type, tiles, row, col, orientation);
   }
 
   public Move moveBack() {
@@ -37,7 +44,7 @@ public class Move {
       row--;
     }
 
-    return new Move(tiles, row, col, orientation);
+    return new Move(type, tiles, row, col, orientation);
   }
 
   public Move moveForward() {
@@ -51,7 +58,7 @@ public class Move {
       row++;
     }
 
-    return new Move(tiles, row, col, orientation);
+    return new Move(type, tiles, row, col, orientation);
   }
 
   public Move playBack(Tile tile) {
@@ -62,7 +69,7 @@ public class Move {
   }
 
   public Move playFront(Tile tile) {
-    Move copy = new Move(tiles, row, col, orientation);
+    Move copy = new Move(type, tiles, row, col, orientation);
     copy.tiles.addLast(tile);
 
     return copy;
@@ -170,6 +177,38 @@ public class Move {
     }
 
     return letters.hashCode();
+  }
+
+  /**
+   * Get a move representing a play
+   *
+   * @param tiles ordered list of tiles to play
+   * @param row row play occurs on
+   * @param column col play occurs on
+   * @param orientation orientation of the play (horiz. or vert.)
+   * @return
+   */
+  public static Move play(List<Tile> tiles, int row, int column, WordOrientation orientation) {
+    return new Move(MoveType.PLAY, tiles, row, column, orientation);
+  }
+
+  /**
+   * Get a move representing a swap
+   *
+   * @param tiles list of tiles to swap out
+   * @return
+   */
+  public static Move swap(List<Tile> tiles) {
+    return new Move(MoveType.SWAP, tiles, 0, 0, null);
+  }
+
+  /**
+   * Get a move representing a pass
+   *
+   * @return
+   */
+  public static Move pass() {
+    return new Move(MoveType.PASS, null, 0, 0, null);
   }
 
   /**

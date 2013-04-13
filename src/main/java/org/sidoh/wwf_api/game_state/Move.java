@@ -5,6 +5,7 @@ import org.sidoh.wwf_api.types.game_state.Letter;
 import org.sidoh.wwf_api.types.game_state.Tile;
 import org.sidoh.wwf_api.types.game_state.WordOrientation;
 
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -208,7 +209,7 @@ public class Move {
    * @return
    */
   public static Move pass() {
-    return new Move(MoveType.PASS, null, 0, 0, null);
+    return new Move(MoveType.PASS, Collections.<Tile>emptyList(), 0, 0, null);
   }
 
   /**

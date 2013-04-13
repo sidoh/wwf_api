@@ -154,7 +154,7 @@ public class GameStateHelper {
     if ( move.getMoveType() == MoveType.SWAP || move.getMoveType() == MoveType.PLAY ) {
       moveSubmission.setTilesPlayed(move.getTiles());
     }
-    else {
+    if ( move.getMoveType() == MoveType.PLAY ) {
       moveSubmission
         .setOrientation(move.getOrientation())
         .setPlayStart(new Coordinates().setX(move.getCol()).setY(move.getRow()));

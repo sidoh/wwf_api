@@ -68,8 +68,9 @@ public class Communication {
    * @param authToken
    * @param gameId
    * @return
+   * @throws ApiRequestException
    */
-  public Reader getUnreadChats(String authToken, long gameId) {
+  public Reader getUnreadChats(String authToken, long gameId) throws ApiRequestException {
     return makeRequest( getUnreadChatsUrl(gameId), authToken );
   }
 
@@ -79,8 +80,9 @@ public class Communication {
    *
    * @param authToken
    * @return
+   * @throws ApiRequestException
    */
-  public Reader getGameIndex(String authToken) {
+  public Reader getGameIndex(String authToken) throws ApiRequestException {
     return makeRequest( getIndexUrl(), authToken );
   }
 
@@ -91,8 +93,9 @@ public class Communication {
    * @param gameId
    * @param authToken
    * @return
+   * @throws ApiRequestException
    */
-  public Reader getGameState(long gameId, String authToken) {
+  public Reader getGameState(long gameId, String authToken) throws ApiRequestException {
     return makeRequest( getGameUrl(gameId), authToken );
   }
 
@@ -104,8 +107,9 @@ public class Communication {
    * @param words
    * @param authToken
    * @return
+   * @throws ApiRequestException
    */
-  public Reader dictionaryLookup(List<String> words, String authToken) {
+  public Reader dictionaryLookup(List<String> words, String authToken) throws ApiRequestException {
     String requestUrl = Joiner.on(';').join(words).toLowerCase();
 
     // This is a bit of a silly bug on Zynga's end... if you send this request with a word list
@@ -123,8 +127,9 @@ public class Communication {
    *
    * @param accessToken
    * @param timestamp
+   * @throws ApiRequestException
    */
-  public Reader getGamesWithUpdates(String accessToken, int timestamp) {
+  public Reader getGamesWithUpdates(String accessToken, int timestamp) throws ApiRequestException {
     String formattedTimestamp = GameStateHelper.TIMESTAMP_DATE_FORMAT.format(new Date(timestamp * 1000L));
     URL url = getGamesWithUpdatesUrl(formattedTimestamp);
 
@@ -138,8 +143,9 @@ public class Communication {
    * @param authToken
    * @param params move submission params -- use RequestGenerator to build this
    * @return
+   * @throws ApiRequestException
    */
-  public Reader makeMove( String authToken, Multimap<RequestGenerator.MoveRequestParam, Object> params ) {
+  public Reader makeMove( String authToken, Multimap<RequestGenerator.MoveRequestParam, Object> params ) throws ApiRequestException {
     String postData = buildPostData(params);
 
     return postRequest(getMoveUrl(), authToken, postData);
@@ -152,8 +158,9 @@ public class Communication {
    *
    * @param authToken
    * @return
+   * @throws ApiRequestException
    */
-  public Reader createRandomGame(String authToken) {
+  public Reader createRandomGame(String authToken) throws ApiRequestException {
     return postRequest(getIndexUrl(), authToken, "create_type=Matchmaking");
   }
 
@@ -163,8 +170,9 @@ public class Communication {
    * @param authToken
    * @param userId
    * @return
+   * @throws ApiRequestException
    */
-  public Reader createFacebookGame(String authToken, long userId) {
+  public Reader createFacebookGame(String authToken, long userId) throws ApiRequestException {
     return postRequest( getIndexUrl(), authToken, "create_type=Search&opponent_fb_id=".concat(String.valueOf(userId)) );
   }
 
@@ -187,8 +195,9 @@ public class Communication {
    * @param gameId
    * @param message
    * @return
+   * @throws ApiRequestException
    */
-  public Reader submitChatMessage(String authToken, long gameId, String message) {
+  public Reader submitChatMessage(String authToken, long gameId, String message) throws ApiRequestException {
     return postRequest( getChatUrl(), authToken, "chat_message", "game_id", gameId, "code", 0, "message", message);
   }
 
@@ -200,9 +209,10 @@ public class Communication {
    * @param paramsKey
    * @param keyValues
    * @return
+   * @throws ApiRequestException
    */
   protected Reader postRequest(URL url, String authToken, String paramsKey,
-                               Object... keyValues) {
+                               Object... keyValues) throws ApiRequestException {
     StringBuilder postData = new StringBuilder();
 
     for (int i = 0; i < keyValues.length; i += 2) {
@@ -226,8 +236,9 @@ public class Communication {
    * @param authToken
    * @param data
    * @return
+   * @throws ApiRequestException
    */
-  protected Reader postRequest(URL url, String authToken, String data) {
+  protected Reader postRequest(URL url, String authToken, String data) throws ApiRequestException {
     try {
       HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -299,8 +310,9 @@ public class Communication {
    * @param url
    * @param authToken
    * @return
+   * @throws ApiRequestException
    */
-  protected Reader makeRequest(URL url, String authToken) {
+  protected Reader makeRequest(URL url, String authToken) throws ApiRequestException {
     try {
       URLConnection connection = url.openConnection();
 
@@ -312,7 +324,7 @@ public class Communication {
       return new InputStreamReader(connection.getInputStream());
     }
     catch (IOException e) {
-      throw new RuntimeException(e);
+      throw new ApiRequestException(e);
     }
   }
 

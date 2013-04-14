@@ -30,8 +30,9 @@ public class StatefulApiProvider {
    *
    * @param gameId
    * @return
+   * @throws ApiRequestException
    */
-  public List<ChatMessage> getUnreadChats(long gameId) {
+  public List<ChatMessage> getUnreadChats(long gameId) throws ApiRequestException {
     return PROVIDER.getUnreadChats(accessToken, gameId);
   }
 
@@ -39,8 +40,9 @@ public class StatefulApiProvider {
    * Get a list of games.
    *
    * @return
+   * @throws ApiRequestException
    */
-  public GameIndex getGameIndex() {
+  public GameIndex getGameIndex() throws ApiRequestException {
     return PROVIDER.getGameIndex(accessToken);
   }
 
@@ -49,8 +51,9 @@ public class StatefulApiProvider {
    *
    * @param gameId
    * @return
+   * @throws ApiRequestException
    */
-  public GameState getGameState(long gameId) {
+  public GameState getGameState(long gameId) throws ApiRequestException {
     return PROVIDER.getGameState(accessToken, gameId);
   }
 
@@ -60,16 +63,18 @@ public class StatefulApiProvider {
    * @param state
    * @param move
    * @return
+   * @throws ApiRequestException
    */
-  public GameState makeMove(GameState state, MoveSubmission move) {
+  public GameState makeMove(GameState state, MoveSubmission move) throws ApiRequestException {
     return PROVIDER.makeMove(accessToken, state, move);
   }
 
   /**
    * Request the creation of a matchmaking game.
    *
+   * @throws ApiRequestException
    */
-  public void createRandomGame() {
+  public void createRandomGame() throws ApiRequestException {
     PROVIDER.createRandomGame(accessToken);
   }
 
@@ -77,8 +82,9 @@ public class StatefulApiProvider {
    * Create a game versus a person with a particular facebook Id.
    *
    * @param userId
+   * @throws ApiRequestException
    */
-  public void createFacebookGame(long userId) {
+  public void createFacebookGame(long userId) throws ApiRequestException {
     PROVIDER.createFacebookGame(accessToken, userId);
   }
 
@@ -86,8 +92,9 @@ public class StatefulApiProvider {
    * Create a game versus a person with a particular Zynga Id.
    *
    * @param userId
+   * @throws ApiRequestException
    */
-  public void createZyngaGame(long userId) {
+  public void createZyngaGame(long userId) throws ApiRequestException {
     PROVIDER.createZyngaGame(accessToken, userId);
   }
 
@@ -97,8 +104,9 @@ public class StatefulApiProvider {
    * @param gameId
    * @param message
    * @return
+   * @throws ApiRequestException
    */
-  public ChatMessage submitChatMessage(long gameId, String message) {
+  public ChatMessage submitChatMessage(long gameId, String message) throws ApiRequestException {
     return PROVIDER.submitChatMessage(accessToken, gameId, message);
   }
 
@@ -107,8 +115,9 @@ public class StatefulApiProvider {
    *
    * @param words a list of words to look up
    * @return list of words that are NOT in the dictionary -- empty set if all are in the dictionary
+   * @throws ApiRequestException
    */
-  public List<String> dictionaryLookup(List<String> words) {
+  public List<String> dictionaryLookup(List<String> words) throws ApiRequestException {
     return PROVIDER.dictionaryLookup(accessToken, words);
   }
 
@@ -118,8 +127,9 @@ public class StatefulApiProvider {
    *
    * @param timestamp
    * @return GameIndex with games having updates occurring after the provided timestamp
+   * @throws ApiRequestException
    */
-  public GameIndex getGamesWithUpdates(int timestamp) {
+  public GameIndex getGamesWithUpdates(int timestamp) throws ApiRequestException {
     return PROVIDER.getGamesWithUpdates(accessToken, timestamp);
   }
 }

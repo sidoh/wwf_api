@@ -22,7 +22,7 @@ public class RequestGenerator {
   /**
    * Needed for computing board checksum, etc.
    */
-  private static final GameStateHelper stateHelper = new GameStateHelper();
+  private static final GameStateHelper stateHelper = GameStateHelper.getInstance();
 
   public interface RequestParam {
     public String getKey();

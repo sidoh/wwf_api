@@ -33,7 +33,7 @@ public class GameList {
 
     // Retrieve list of games and display the game state for each
     StatefulApiProvider api = new StatefulApiProvider(accessToken);
-    GameStateHelper helper = new GameStateHelper();
+    GameStateHelper helper = GameStateHelper.getInstance();
 
     GameIndex index = api.getGameIndex();
     User me = index.getUser();

@@ -16,6 +16,24 @@ import java.util.Locale;
 public class GameStateHelper {
   public static final SimpleDateFormat TIMESTAMP_DATE_FORMAT
     = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'", Locale.GERMANY);
+  private static GameStateHelper instance;
+
+  /**
+   * Force singleton
+   */
+  private GameStateHelper() { }
+
+  /**
+   * Get the singleton instance of GameStateHelper
+   *
+   * @return
+   */
+  public static GameStateHelper getInstance() {
+    if ( instance == null ) {
+      instance = new GameStateHelper();
+    }
+    return instance;
+  }
 
   /**
    * Compute the number of seconds elapsed since the specified timestamp

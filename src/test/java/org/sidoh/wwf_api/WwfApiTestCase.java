@@ -24,7 +24,7 @@ import java.util.List;
 public class WwfApiTestCase extends TestCase {
   private static int tileId = 0;
 
-  protected static final GameStateHelper stateHelper = new GameStateHelper();
+  protected static final GameStateHelper stateHelper = GameStateHelper.getInstance();
 
   public static void assertResultEquals(int score, List<String> words, Move.Result result) {
     assertEquals("score should match", score, result.getScore());

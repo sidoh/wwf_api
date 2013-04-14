@@ -24,7 +24,7 @@ public class StateReconstructor {
   private static final int TILES_PER_PLAYER = 7;
   private static final String SKIPPED_TILE_INDICATOR = "*";
 
-  private static final GameStateHelper stateHelper = new GameStateHelper();
+  private static final GameStateHelper stateHelper = GameStateHelper.getInstance();
 
   /**
    * Reconstructs the game state from a list of rules. This includes which tiles have

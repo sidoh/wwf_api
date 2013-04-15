@@ -1,5 +1,6 @@
 package org.sidoh.wwf_api;
 
+import com.google.common.collect.Lists;
 import org.sidoh.wwf_api.game_state.GameStateHelper;
 import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
 import org.sidoh.wwf_api.types.api.GameMeta;
@@ -69,7 +70,7 @@ public class StateReconstructor {
       int totalPlayedTiles = 0;
 
       // A list of tiles returned to the bag (done after replacing them)
-      List<Tile> returnedTiles = new LinkedList<Tile>();
+      List<Tile> returnedTiles = Lists.newLinkedList();
 
       // Only need to do anything if tiles are played/swapped
       if (move.getMoveType() == MoveType.PLAY || move.getMoveType() == MoveType.SWAP) {

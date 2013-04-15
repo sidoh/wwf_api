@@ -257,29 +257,6 @@ public class Move {
         '}';
     }
 
-    @Override
-    public boolean equals(Object o) {
-      if (this == o) return true;
-      if (o == null || getClass() != o.getClass()) return false;
 
-      Result result = (Result) o;
-
-      if (numTilesSkipped != result.numTilesSkipped) return false;
-      if (score != result.score) return false;
-      if (mainWord != null ? !mainWord.equals(result.mainWord) : result.mainWord != null) return false;
-      if (resultingWords != null ? !resultingWords.equals(result.resultingWords) : result.resultingWords != null)
-        return false;
-
-      return true;
-    }
-
-    @Override
-    public int hashCode() {
-      int result = score;
-      result = 31 * result + numTilesSkipped;
-      result = 31 * result + (mainWord != null ? mainWord.hashCode() : 0);
-      result = 31 * result + (resultingWords != null ? resultingWords.hashCode() : 0);
-      return result;
-    }
   }
 }

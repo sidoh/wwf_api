@@ -1,5 +1,6 @@
 package org.sidoh.wwf_api;
 
+import com.google.common.collect.Lists;
 import org.sidoh.wwf_api.game_state.TileBuilder;
 import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
 import org.sidoh.wwf_api.types.game_state.Letter;
@@ -126,7 +127,7 @@ public class Bag {
    * @return
    */
   public List<Tile> getRemainingTiles() {
-    return new ArrayList<Tile>(tiles);
+    return Lists.newArrayList(tiles);
   }
 
   /**
@@ -135,7 +136,7 @@ public class Bag {
    * @return
    */
   public List<Tile> getRemainingTilesInPullOrder() {
-    Bag copy = new Bag(seed, (MersenneTwister)twister.clone(), new ArrayList<Tile>(tiles));
+    Bag copy = new Bag(seed, (MersenneTwister)twister.clone(), Lists.newArrayList(tiles));
 
     return copy.pullTiles(tiles.size());
   }

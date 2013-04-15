@@ -1,5 +1,7 @@
 package org.sidoh.wwf_api.game_state;
 
+import com.google.common.collect.Lists;
+import org.sidoh.wwf_api.Bag;
 import org.sidoh.wwf_api.types.api.*;
 import org.sidoh.wwf_api.types.game_state.Rack;
 import org.sidoh.wwf_api.types.game_state.Slot;
@@ -335,41 +337,62 @@ public class GameStateHelper {
    * @return
    */
   public GameState applyMove(GameState state, Move move) {
-    GameState copy = state.deepCopy();
+    state = state.deepCopy();
 
-    // Make sure nothing tries to use the old state
-    state = null;
-
-    User moveUser = copy.getMeta().getUsersById().get(copy.getMeta().getCurrentMoveUserId());
+    User moveUser = state.getMeta().getUsersById().get(state.getMeta().getCurrentMoveUserId());
 
     // Build board from current game state
-    WordsWithFriendsBoard board = createBoardFromState(copy);
+    WordsWithFriendsBoard board = createBoardFromState(state);
 
     // swap users
-    copy.getMeta().setCurrentMoveUserId(getOtherUser(copy.getMeta().getCurrentMoveUserId(), copy).getId());
+    state.getMeta().setCurrentMoveUserId(getOtherUser(state.getMeta().getCurrentMoveUserId(), state).getId());
 
     // pop tiles
-    List<Tile> remaining = new ArrayList<Tile>(Math.max(0, copy.getRemainingTilesSize() - move.getTiles().size()));
-    List<Tile> popped = new LinkedList<Tile>();
-    for (int i = 0; i < Math.min(copy.getRemainingTilesSize(), move.getTiles().size()); i++) {
-      popped.add(copy.getRemainingTiles().get(i));
+    List<Tile> remaining = Lists.newArrayListWithCapacity(Math.max(0, state.getRemainingTilesSize() - move.getTiles().size()));
+    List<Tile> popped = Lists.newLinkedList();
+    for (int i = 0; i < Math.min(state.getRemainingTilesSize(), move.getTiles().size()); i++) {
+      popped.add(state.getRemainingTiles().get(i));
     }
-    for (int i = move.getTiles().size(); i < copy.getRemainingTilesSize(); i++) {
-      remaining.add(copy.getRemainingTiles().get(i));
+    for (int i = move.getTiles().size(); i < state.getRemainingTilesSize(); i++) {
+      remaining.add(state.getRemainingTiles().get(i));
     }
-    copy.setRemainingTiles(remaining);
+    state.setRemainingTiles(remaining);
 
     // racks
-    copy.getRacks().get(moveUser.getId()).removeAll(move.getTiles());
-    copy.getRacks().get(moveUser.getId()).addAll(popped);
+    state.getRacks().get(moveUser.getId()).removeAll(move.getTiles());
+    state.getRacks().get(moveUser.getId()).addAll(popped);
 
     // scores
-    addToScore(moveUser, copy, move.getResult().getScore());
+    addToScore(moveUser, state, move.getResult().getScore());
 
     // board
-    copy.setBoard(board.getStorage().getSlots());
+    state.setBoard(board.getStorage().getSlots());
 
-    return copy;
+    return state;
+  }
+
+  /**
+   * Reconstruct the tile bag from the state. It'd be great if we could put the bag in the state, but
+   * since it involves the state of the MersenneTwister (which is implementation-specific), there's not
+   * much we can do.
+   *
+   * @param state
+   * @return
+   */
+  public Bag reconstructBag(GameState state) {
+    Bag initialBag = new Bag(state.getMeta().getRandomSeed());
+
+    for (MoveData moveData : state.getAllMoves()) {
+      if ( moveData.getMoveType() == MoveType.PLAY ) {
+        initialBag.pullTiles(moveData.getTiles().size());
+      }
+      else if ( moveData.getMoveType() == MoveType.SWAP ) {
+        initialBag.pullTiles(moveData.getTiles().size());
+        initialBag.returnTiles(moveData.getTiles());
+      }
+    }
+
+    return initialBag;
   }
 
   /**

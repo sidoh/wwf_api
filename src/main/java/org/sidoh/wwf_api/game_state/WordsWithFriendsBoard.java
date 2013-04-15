@@ -1,5 +1,6 @@
 package org.sidoh.wwf_api.game_state;
 
+import org.sidoh.wwf_api.types.api.MoveType;
 import org.sidoh.wwf_api.types.game_state.BoardStorage;
 import org.sidoh.wwf_api.types.game_state.Slot;
 import org.sidoh.wwf_api.types.game_state.SlotModifier;
@@ -202,14 +203,22 @@ public class WordsWithFriendsBoard extends Board implements Cloneable {
    * @return
    */
   public Move.Result move(Move move) {
-    Move.Result result = playWord(move.getTiles(),
-        move.getRow(),
-        move.getCol(),
-        move.getOrientation(),
-        true);
-    move.setResult(result);
+    if ( move.getMoveType() == MoveType.PLAY ) {
+      Move.Result result = playWord(move.getTiles(),
+          move.getRow(),
+          move.getCol(),
+          move.getOrientation(),
+          true);
+      move.setResult(result);
+      return result;
+    }
+    else if ( move.getMoveType() == MoveType.SWAP ) {
+      Move.Result result = new Move.Result(0, 0, null, null);
+      move.setResult(result);
+      return result;
+    }
 
-    return result;
+    throw new RuntimeException("Unsupported move type: " + move.getMoveType());
   }
 
   /**

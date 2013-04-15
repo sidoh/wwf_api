@@ -343,24 +343,22 @@ public class GameStateHelper {
 
     // Build board from current game state
     WordsWithFriendsBoard board = createBoardFromState(state);
+    board.move(move);
 
     // swap users
     state.getMeta().setCurrentMoveUserId(getOtherUser(state.getMeta().getCurrentMoveUserId(), state).getId());
 
     // pop tiles
-    List<Tile> remaining = Lists.newArrayListWithCapacity(Math.max(0, state.getRemainingTilesSize() - move.getTiles().size()));
-    List<Tile> popped = Lists.newLinkedList();
-    for (int i = 0; i < Math.min(state.getRemainingTilesSize(), move.getTiles().size()); i++) {
-      popped.add(state.getRemainingTiles().get(i));
-    }
-    for (int i = move.getTiles().size(); i < state.getRemainingTilesSize(); i++) {
-      remaining.add(state.getRemainingTiles().get(i));
-    }
-    state.setRemainingTiles(remaining);
+    Bag tileBag = reconstructBag(state);
+    List<Tile> userRack = state.getRacks().get(moveUser.getId());
+    userRack.removeAll(move.getTiles());
+    userRack.addAll(tileBag.pullTiles(move.getTiles().size()));
 
-    // racks
-    state.getRacks().get(moveUser.getId()).removeAll(move.getTiles());
-    state.getRacks().get(moveUser.getId()).addAll(popped);
+    if ( move.getMoveType() == MoveType.SWAP ) {
+      tileBag.returnTiles(move.getTiles());
+    }
+
+    state.setRemainingTiles(tileBag.getRemainingTilesInPullOrder());
 
     // scores
     addToScore(moveUser, state, move.getResult().getScore());
@@ -381,6 +379,9 @@ public class GameStateHelper {
    */
   public Bag reconstructBag(GameState state) {
     Bag initialBag = new Bag(state.getMeta().getRandomSeed());
+
+    // Pull initial tiles
+    initialBag.pullTiles(WordsWithFriendsBoard.TILES_PER_PLAYER * 2);
 
     for (MoveData moveData : state.getAllMoves()) {
       if ( moveData.getMoveType() == MoveType.PLAY ) {

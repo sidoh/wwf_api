@@ -144,7 +144,7 @@ public class ApiProvider {
    * @throws ApiRequestException
    */
   public List<String> dictionaryLookup(String accessToken, List<String> words) throws ApiRequestException {
-    LOG.info("Checking if the following words are in the WWF dictionary: " + words);
+    LOG.debug("Checking if the following words are in the WWF dictionary: " + words);
 
     return parser.parseDictionaryLookupResponse( comm.dictionaryLookup(words, accessToken) );
   }

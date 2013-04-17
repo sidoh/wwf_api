@@ -352,7 +352,7 @@ public class GameStateHelper {
     Bag tileBag = reconstructBag(state);
     List<Tile> userRack = state.getRacks().get(moveUser.getId());
     userRack.removeAll(move.getTiles());
-    userRack.addAll(tileBag.pullTiles(move.getTiles().size()));
+    userRack.addAll(tileBag.pullTiles(Math.min(tileBag.getRemainingTiles().size(), move.getTiles().size())));
 
     if ( move.getMoveType() == MoveType.SWAP ) {
       tileBag.returnTiles(move.getTiles());
@@ -385,11 +385,11 @@ public class GameStateHelper {
 
     for (MoveData moveData : state.getAllMoves()) {
       if ( moveData.getMoveType() == MoveType.PLAY ) {
-        initialBag.pullTiles(moveData.getTiles().size());
+        initialBag.pullTiles(Math.min(initialBag.getRemainingTiles().size(), moveData.getTiles().size()));
       }
       else if ( moveData.getMoveType() == MoveType.SWAP ) {
         initialBag.pullTiles(moveData.getTiles().size());
-        initialBag.returnTiles(moveData.getTiles());
+        initialBag.pullTiles(Math.min(initialBag.getRemainingTiles().size(), moveData.getTiles().size()));
       }
     }
 

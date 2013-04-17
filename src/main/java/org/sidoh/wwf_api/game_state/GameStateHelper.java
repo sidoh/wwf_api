@@ -389,7 +389,7 @@ public class GameStateHelper {
       }
       else if ( moveData.getMoveType() == MoveType.SWAP ) {
         initialBag.pullTiles(moveData.getTiles().size());
-        initialBag.pullTiles(Math.min(initialBag.getRemainingTiles().size(), moveData.getTiles().size()));
+        initialBag.returnTiles(moveData.getTiles());
       }
     }
 

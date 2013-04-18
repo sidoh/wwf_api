@@ -150,7 +150,7 @@ includes the following information:
 Then, one can use the `GameStateHelper` to submit the move to the API.
 
 ```java
-GameStateHelper helper = new GameStateHelper();
+GameStateHelper helper = GameStateHelper.getInstance();
 GameState updatedState = api.makeMove(gameState, helper.createMoveSubmissionFromPlay(move));
 ```
 

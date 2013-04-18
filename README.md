@@ -130,7 +130,7 @@ class to make your life easier in doing this.
 
 ##### To resign or pass
 ```java
-GameStateHelper helper = new GameStateHelper();
+GameStateHelper helper = GameStateHelper.getInstance();
 GameState updatedState1 = api.makeMove(gameState1, helper.createMoveSubmission(MoveType.RESIGN));
 GameState updatedState2 = api.makeMove(gameState2, helper.createMoveSubmission(MoveType.PASS));
 ```

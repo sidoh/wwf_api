@@ -33,7 +33,7 @@ for tag in $(echo $(git tag) HEAD); do
     javadoc -d $working_dir -sourcepath src/main/java -subpackages org.sidoh -exclude ec.util:org.sidoh.wwf_api.types
 
     git checkout gh-pages
-    mv $working_dir javadoc/$tag
+    mv $working_dir/* javadoc/$tag
     git add javadoc
     git commit -am "update javadoc for $tag"
   fi

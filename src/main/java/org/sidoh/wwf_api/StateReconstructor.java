@@ -107,8 +107,10 @@ public class StateReconstructor {
 
             playerTiles.remove(tile);
 
-            if (playerTiles.size() == sizeBefore)
-              throw new RuntimeException("tried to remove: " + tile + " from: " + playerTiles + ", but couldn't find it");
+            if (playerTiles.size() == sizeBefore) {
+              throw new RuntimeException("tried to remove: " + tile + " from: " + playerTiles
+                + ", but couldn't find it. This probably means someone is cheating");
+            }
 
             // If the tile was a blank, the next split will be what letter the blank was
             // assigned to.
@@ -138,7 +140,7 @@ public class StateReconstructor {
             scores.increment(currentUser.getId(), points);
 
             if (move.isSetPoints() && move.getPoints() != points)
-              LOG.debug("json move's points don't match computed points. saw: " + move.getPoints() + ", expected: " + points);
+              LOG.error("json move's points don't match computed points. saw: " + move.getPoints() + ", expected: " + points);
           }
         }
 

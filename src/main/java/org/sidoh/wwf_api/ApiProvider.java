@@ -1,10 +1,15 @@
 package org.sidoh.wwf_api;
 
+import com.google.common.collect.Lists;
+import com.google.common.collect.Sets;
+import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
 import org.sidoh.wwf_api.types.api.ChatMessage;
 import org.sidoh.wwf_api.types.api.GameIndex;
 import org.sidoh.wwf_api.types.api.GameMeta;
 import org.sidoh.wwf_api.types.api.GameState;
 import org.sidoh.wwf_api.types.api.MoveSubmission;
+import org.sidoh.wwf_api.types.api.MoveType;
+import org.sidoh.wwf_api.types.game_state.Tile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,8 +81,9 @@ public class ApiProvider {
    * @throws ApiRequestException
    */
   public GameState makeMove(String accessToken, GameState state, MoveSubmission move) throws ApiRequestException {
-    LOG.info("submitting move: " + move);
+    validateMove(state, move);
 
+    LOG.info("submitting move: " + move);
     comm.makeMove(accessToken, requestGenerator.generateMoveParams(state, move));
 
     // TODO: can reconstruct game state without making the request
@@ -160,5 +166,37 @@ public class ApiProvider {
    */
   public GameIndex getGamesWithUpdates(String accessToken, int timestamp) throws ApiRequestException {
     return parser.parseGameIndex( comm.getGamesWithUpdates(accessToken, timestamp) );
+  }
+
+  /**
+   * Validates the provided move, ensuring that it's legal. This does <i>not</i> ensure that all of
+   * the words formed are valid words. It instead checks that everything is sane. For example, it
+   * ensures that all of the played tiles are actually in the rack of the user submitting the move.
+   *
+   * @param state the game state before the move is submitted
+   * @param move the move to be validated
+   */
+  protected void validateMove(GameState state, MoveSubmission move) {
+    // Ensure that coordinates are within expected bounds:
+    if ( move.getType() == MoveType.PLAY ) {
+      int x = move.getPlayStart().getX();
+      int y = move.getPlayStart().getY();
+
+      if (x < 0 || x >= WordsWithFriendsBoard.DIMENSIONS || y < 0 || y >= WordsWithFriendsBoard.DIMENSIONS) {
+        throw new ApiRequestException("Coordinates not within expected bounds. Must be in the interval "
+          + "(0," + WordsWithFriendsBoard.DIMENSIONS + "). Got: " + move.getPlayStart());
+      }
+    }
+
+    // Ensure that the tiles played are in the user's rack.
+    if ( move.getType() == MoveType.PLAY || move.getType() == MoveType.SWAP ) {
+      Set<Tile> playedTiles = Sets.newHashSet(move.getTilesPlayed());
+      Set<Tile> availableTiles = Sets.newHashSet(state.getRacks().get(state.getMeta().getCurrentMoveUserId()));
+
+      if ( !Sets.difference(playedTiles, availableTiles).isEmpty()) {
+        throw new ApiRequestException("Tried to play move including tiles that aren't in current player's rack. "
+          + "Played tiles: " + playedTiles + " // available: " + availableTiles);
+      }
+    }
   }
 }

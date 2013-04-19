@@ -190,12 +190,20 @@ public class ApiProvider {
 
     // Ensure that the tiles played are in the user's rack.
     if ( move.getType() == MoveType.PLAY || move.getType() == MoveType.SWAP ) {
-      Set<Tile> playedTiles = Sets.newHashSet(move.getTilesPlayed());
-      Set<Tile> availableTiles = Sets.newHashSet(state.getRacks().get(state.getMeta().getCurrentMoveUserId()));
+      List<Tile> available = state.getRacks().get(state.getMeta().getCurrentMoveUserId());
+      Set<Integer> playedTileIds = Sets.newHashSet();
+      Set<Integer> availableTileIds = Sets.newHashSet();
 
-      if ( !Sets.difference(playedTiles, availableTiles).isEmpty()) {
+      for (Tile tile : move.getTilesPlayed()) {
+        playedTileIds.add(tile.getValue());
+      }
+      for (Tile tile : available) {
+        availableTileIds.add(tile.getValue());
+      }
+
+      if ( !Sets.difference(playedTileIds, availableTileIds).isEmpty()) {
         throw new ApiRequestException("Tried to play move including tiles that aren't in current player's rack. "
-          + "Played tiles: " + playedTiles + " // available: " + availableTiles);
+          + "Played tiles: " + move.getTilesPlayed() + " // available: " + available);
       }
     }
   }

@@ -240,7 +240,7 @@ Release versions of wwf_api is available in maven central:
 <dependency>
     <groupId>org.sidoh</groupId>
     <artifactId>wwf_api</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
 </dependency>
 ```
 
@@ -258,6 +258,6 @@ Snapshot (development) versions are available through sonatype:
 <dependency>
     <groupId>org.sidoh</groupId>
     <artifactId>wwf_api</artifactId>
-    <version>0.3</version>
+    <version>0.4</version>
 </dependency>
 ```

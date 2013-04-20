@@ -80,7 +80,7 @@ public class ApiProvider {
    * @return
    * @throws ApiRequestException
    */
-  public GameState makeMove(String accessToken, GameState state, MoveSubmission move) throws ApiRequestException {
+  public GameState makeMove(String accessToken, GameState state, MoveSubmission move) throws ApiRequestException, MoveValidationException {
     validateMove(state, move);
 
     LOG.info("submitting move: " + move);
@@ -183,7 +183,7 @@ public class ApiProvider {
       int y = move.getPlayStart().getY();
 
       if (x < 0 || x >= WordsWithFriendsBoard.DIMENSIONS || y < 0 || y >= WordsWithFriendsBoard.DIMENSIONS) {
-        throw new ApiRequestException("Coordinates not within expected bounds. Must be in the interval "
+        throw new MoveValidationException("Coordinates not within expected bounds. Must be in the interval "
           + "(0," + WordsWithFriendsBoard.DIMENSIONS + "). Got: " + move.getPlayStart());
       }
     }
@@ -202,7 +202,7 @@ public class ApiProvider {
       }
 
       if ( !Sets.difference(playedTileIds, availableTileIds).isEmpty()) {
-        throw new ApiRequestException("Tried to play move including tiles that aren't in current player's rack. "
+        throw new MoveValidationException("Tried to play move including tiles that aren't in current player's rack. "
           + "Played tiles: " + move.getTilesPlayed() + " // available: " + available);
       }
     }

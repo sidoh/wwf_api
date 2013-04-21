@@ -3,18 +3,13 @@ package org.sidoh.wwf_api;
 import com.google.common.collect.Lists;
 import org.sidoh.wwf_api.game_state.GameStateHelper;
 import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
-import org.sidoh.wwf_api.types.api.GameMeta;
-import org.sidoh.wwf_api.types.api.GameState;
-import org.sidoh.wwf_api.types.api.MoveData;
-import org.sidoh.wwf_api.types.api.MoveType;
-import org.sidoh.wwf_api.types.api.User;
+import org.sidoh.wwf_api.types.api.*;
 import org.sidoh.wwf_api.types.game_state.Tile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -136,7 +131,7 @@ public class StateReconstructor {
 
           // Score the move if it's a play
           if (move.getMoveType() == MoveType.PLAY) {
-            int points = scoringBoard.move(stateHelper.buildGameStateMove(move)).getScore();
+            int points = scoringBoard.move(stateHelper.buildGameStateMove(move, scoringBoard)).getScore();
             scores.increment(currentUser.getId(), points);
 
             if (move.isSetPoints() && move.getPoints() != points)

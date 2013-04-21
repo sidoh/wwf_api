@@ -1,6 +1,5 @@
 package org.sidoh.wwf_api.game_state;
 
-import com.google.common.collect.Lists;
 import org.sidoh.wwf_api.Bag;
 import org.sidoh.wwf_api.types.api.*;
 import org.sidoh.wwf_api.types.game_state.Rack;
@@ -10,20 +9,19 @@ import org.sidoh.wwf_api.types.game_state.WordOrientation;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
 public class GameStateHelper {
   public static final SimpleDateFormat TIMESTAMP_DATE_FORMAT
-    = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'", Locale.GERMANY);
+      = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'", Locale.GERMANY);
   private static GameStateHelper instance;
 
   /**
    * Force singleton
    */
-  private GameStateHelper() { }
+  private GameStateHelper() {
+  }
 
   /**
    * Get the singleton instance of GameStateHelper
@@ -31,7 +29,7 @@ public class GameStateHelper {
    * @return
    */
   public static GameStateHelper getInstance() {
-    if ( instance == null ) {
+    if (instance == null) {
       instance = new GameStateHelper();
     }
     return instance;
@@ -45,9 +43,8 @@ public class GameStateHelper {
    */
   public int getNumSecondsEllapsedSinceTimestamp(String timestamp) {
     try {
-      return (int) ((System.currentTimeMillis() - TIMESTAMP_DATE_FORMAT.parse(timestamp).getTime())/1000L);
-    }
-    catch (ParseException e) {
+      return (int) ((System.currentTimeMillis() - TIMESTAMP_DATE_FORMAT.parse(timestamp).getTime()) / 1000L);
+    } catch (ParseException e) {
       throw new RuntimeException("Couldn't parse timestamp: " + timestamp, e);
     }
   }
@@ -64,13 +61,11 @@ public class GameStateHelper {
     int myScore = getScore(user, state);
     int otherScore = getScore(getOtherUser(user, state), state);
 
-    if ( myScore == otherScore ) {
+    if (myScore == otherScore) {
       return GameScoreStatus.TIED;
-    }
-    else if ( myScore < otherScore ) {
+    } else if (myScore < otherScore) {
       return GameScoreStatus.LOSING;
-    }
-    else {
+    } else {
       return GameScoreStatus.WINNING;
     }
   }
@@ -171,20 +166,19 @@ public class GameStateHelper {
   public MoveSubmission createMoveSubmissionFromPlay(Move move) {
     MoveSubmission moveSubmission = createMoveSubmission(move.getMoveType());
 
-    if ( move.getMoveType() == MoveType.SWAP || move.getMoveType() == MoveType.PLAY ) {
+    if (move.getMoveType() == MoveType.SWAP || move.getMoveType() == MoveType.PLAY) {
       moveSubmission.setTilesPlayed(move.getTiles());
     }
-    if ( move.getMoveType() == MoveType.PLAY ) {
+    if (move.getMoveType() == MoveType.PLAY) {
       moveSubmission
-        .setOrientation(move.getOrientation())
-        .setPlayStart(new Coordinates().setX(move.getCol()).setY(move.getRow()));
+          .setOrientation(move.getOrientation())
+          .setPlayStart(new Coordinates().setX(move.getCol()).setY(move.getRow()));
     }
 
     return moveSubmission;
   }
 
   /**
-   *
    * @param type
    * @return
    */
@@ -234,13 +228,12 @@ public class GameStateHelper {
       Tile tile = tiles.get(i).getTile();
 
       if (tile != null) {
-        board.getSlot(i).setTile( tile );
+        board.getSlot(i).setTile(tile);
       }
     }
   }
 
   /**
-   *
    * @param tiles
    * @return
    */
@@ -249,7 +242,6 @@ public class GameStateHelper {
   }
 
   /**
-   *
    * @param userId
    * @param state
    * @return
@@ -277,7 +269,6 @@ public class GameStateHelper {
   }
 
   /**
-   *
    * @param user
    * @param state
    * @return user's score.
@@ -287,7 +278,6 @@ public class GameStateHelper {
   }
 
   /**
-   *
    * @param uid
    * @param state
    * @return user's score
@@ -354,7 +344,7 @@ public class GameStateHelper {
     userRack.removeAll(move.getTiles());
     userRack.addAll(tileBag.pullTiles(Math.min(tileBag.getRemainingTiles().size(), move.getTiles().size())));
 
-    if ( move.getMoveType() == MoveType.SWAP ) {
+    if (move.getMoveType() == MoveType.SWAP) {
       tileBag.returnTiles(move.getTiles());
     }
 
@@ -384,10 +374,9 @@ public class GameStateHelper {
     initialBag.pullTiles(WordsWithFriendsBoard.TILES_PER_PLAYER * 2);
 
     for (MoveData moveData : state.getAllMoves()) {
-      if ( moveData.getMoveType() == MoveType.PLAY ) {
+      if (moveData.getMoveType() == MoveType.PLAY) {
         initialBag.pullTiles(Math.min(initialBag.getRemainingTiles().size(), moveData.getTiles().size()));
-      }
-      else if ( moveData.getMoveType() == MoveType.SWAP ) {
+      } else if (moveData.getMoveType() == MoveType.SWAP) {
         initialBag.pullTiles(moveData.getTiles().size());
         initialBag.returnTiles(moveData.getTiles());
       }
@@ -397,15 +386,27 @@ public class GameStateHelper {
   }
 
   /**
-   *
    * @param move
    * @return
    */
-  public Move buildGameStateMove(MoveData move) {
-    return Move.play(move.getTiles(),
-      move.getPlayStartPosition().getY(),
-      move.getPlayStartPosition().getX(),
-      move.getPlayStartPosition().getX() < move.getPlayEndPosition().getX() ? WordOrientation.HORIZONTAL : WordOrientation.VERTICAL);
+  public Move buildGameStateMove(MoveData move, WordsWithFriendsBoard board) {
+    int startRow = move.getPlayStartPosition().getY();
+    int startCol = move.getPlayStartPosition().getX();
+    int endRow = move.getPlayEndPosition().getY();
+    int endCol = move.getPlayEndPosition().getX();
+
+    WordOrientation orientation;
+
+    if (startCol < endCol) {
+      orientation = WordOrientation.HORIZONTAL;
+    } else if (startRow < endRow) {
+      orientation = WordOrientation.VERTICAL;
+    } else if (board.hasAdjacentTiles(startRow, startCol, WordOrientation.HORIZONTAL)) {
+      orientation = WordOrientation.HORIZONTAL;
+    } else {
+      orientation = WordOrientation.VERTICAL;
+    }
+    return Move.play(move.getTiles(), startRow, startCol, orientation);
   }
 
   /**
@@ -416,8 +417,8 @@ public class GameStateHelper {
    */
   public Move buildGameStateMove(MoveSubmission move) {
     return Move.play(move.getTilesPlayed(),
-      move.getPlayStart().getY(),
-      move.getPlayStart().getX(),
-      move.getOrientation());
+        move.getPlayStart().getY(),
+        move.getPlayStart().getX(),
+        move.getOrientation());
   }
 }

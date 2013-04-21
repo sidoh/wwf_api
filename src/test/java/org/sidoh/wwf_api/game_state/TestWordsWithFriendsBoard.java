@@ -31,10 +31,10 @@ public class TestWordsWithFriendsBoard extends WwfApiTestCase {
     for (int i = 1; i <= 7; i++) {
       for (int j = 0; j < 15; j++) {
         assertEquals("should have vertical symmetry",
-                board.getSlot(j, 7-i).getModifier(),
-                board.getSlot(j, 7+i).getModifier());
+            board.getSlot(j, 7 - i).getModifier(),
+            board.getSlot(j, 7 + i).getModifier());
 
-        seenModifiers.add(board.getSlot(j, 7-i).getModifier());
+        seenModifiers.add(board.getSlot(j, 7 - i).getModifier());
       }
     }
 
@@ -48,7 +48,7 @@ public class TestWordsWithFriendsBoard extends WwfApiTestCase {
 
     assertNotNull("should've saved played tile", board.getSlot(0, 0).getTile());
 
-    for (int i = 1; i < 15*15; i++) {
+    for (int i = 1; i < 15 * 15; i++) {
       assertNull("other slots should have no tile", board.getSlot(i).getTile());
     }
   }
@@ -61,8 +61,8 @@ public class TestWordsWithFriendsBoard extends WwfApiTestCase {
 
     for (int i = 0; i < word.length(); i++) {
       assertEquals("should get expected letter",
-              String.valueOf(word.charAt(i)),
-              board.getSlot(0, i).getTile().getLetter().getValue());
+          String.valueOf(word.charAt(i)),
+          board.getSlot(0, i).getTile().getLetter().getValue());
     }
   }
 
@@ -126,16 +126,14 @@ public class TestWordsWithFriendsBoard extends WwfApiTestCase {
     WordsWithFriendsBoard board = new WordsWithFriendsBoard();
 
     for (MoveData moveData : state.getAllMoves()) {
-      Move move = stateHelper.buildGameStateMove(moveData);
 
-      if ( move.getMoveType() == MoveType.PLAY ) {
+      if (moveData.getMoveType() == MoveType.PLAY) {
+        Move move = stateHelper.buildGameStateMove(moveData, board);
         board.move(move);
-        System.out.println(move);
-        System.out.println(board);
 
         assertEquals("computed score and expected score should match",
-          moveData.getPoints(),
-          move.getResult().getScore());
+            moveData.getPoints(),
+            move.getResult().getScore());
       }
     }
   }

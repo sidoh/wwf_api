@@ -1,7 +1,13 @@
 package org.sidoh.wwf_api.game_state;
 
 import org.sidoh.wwf_api.Bag;
-import org.sidoh.wwf_api.types.api.*;
+import org.sidoh.wwf_api.types.api.Coordinates;
+import org.sidoh.wwf_api.types.api.GameMeta;
+import org.sidoh.wwf_api.types.api.GameState;
+import org.sidoh.wwf_api.types.api.MoveData;
+import org.sidoh.wwf_api.types.api.MoveSubmission;
+import org.sidoh.wwf_api.types.api.MoveType;
+import org.sidoh.wwf_api.types.api.User;
 import org.sidoh.wwf_api.types.game_state.Rack;
 import org.sidoh.wwf_api.types.game_state.Slot;
 import org.sidoh.wwf_api.types.game_state.Tile;
@@ -14,7 +20,7 @@ import java.util.Locale;
 
 public class GameStateHelper {
   public static final SimpleDateFormat TIMESTAMP_DATE_FORMAT
-      = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'", Locale.GERMANY);
+    = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'", Locale.GERMANY);
   private static GameStateHelper instance;
 
   /**
@@ -44,7 +50,8 @@ public class GameStateHelper {
   public int getNumSecondsEllapsedSinceTimestamp(String timestamp) {
     try {
       return (int) ((System.currentTimeMillis() - TIMESTAMP_DATE_FORMAT.parse(timestamp).getTime()) / 1000L);
-    } catch (ParseException e) {
+    }
+    catch (ParseException e) {
       throw new RuntimeException("Couldn't parse timestamp: " + timestamp, e);
     }
   }
@@ -63,9 +70,11 @@ public class GameStateHelper {
 
     if (myScore == otherScore) {
       return GameScoreStatus.TIED;
-    } else if (myScore < otherScore) {
+    }
+    else if (myScore < otherScore) {
       return GameScoreStatus.LOSING;
-    } else {
+    }
+    else {
       return GameScoreStatus.WINNING;
     }
   }
@@ -171,8 +180,8 @@ public class GameStateHelper {
     }
     if (move.getMoveType() == MoveType.PLAY) {
       moveSubmission
-          .setOrientation(move.getOrientation())
-          .setPlayStart(new Coordinates().setX(move.getCol()).setY(move.getRow()));
+        .setOrientation(move.getOrientation())
+        .setPlayStart(new Coordinates().setX(move.getCol()).setY(move.getRow()));
     }
 
     return moveSubmission;
@@ -376,7 +385,8 @@ public class GameStateHelper {
     for (MoveData moveData : state.getAllMoves()) {
       if (moveData.getMoveType() == MoveType.PLAY) {
         initialBag.pullTiles(Math.min(initialBag.getRemainingTiles().size(), moveData.getTiles().size()));
-      } else if (moveData.getMoveType() == MoveType.SWAP) {
+      }
+      else if (moveData.getMoveType() == MoveType.SWAP) {
         initialBag.pullTiles(moveData.getTiles().size());
         initialBag.returnTiles(moveData.getTiles());
       }
@@ -399,11 +409,14 @@ public class GameStateHelper {
 
     if (startCol < endCol) {
       orientation = WordOrientation.HORIZONTAL;
-    } else if (startRow < endRow) {
+    }
+    else if (startRow < endRow) {
       orientation = WordOrientation.VERTICAL;
-    } else if (board.hasAdjacentTiles(startRow, startCol, WordOrientation.HORIZONTAL)) {
+    }
+    else if (board.hasAdjacentTiles(startRow, startCol, WordOrientation.HORIZONTAL)) {
       orientation = WordOrientation.HORIZONTAL;
-    } else {
+    }
+    else {
       orientation = WordOrientation.VERTICAL;
     }
     return Move.play(move.getTiles(), startRow, startCol, orientation);
@@ -417,8 +430,8 @@ public class GameStateHelper {
    */
   public Move buildGameStateMove(MoveSubmission move) {
     return Move.play(move.getTilesPlayed(),
-        move.getPlayStart().getY(),
-        move.getPlayStart().getX(),
-        move.getOrientation());
+      move.getPlayStart().getY(),
+      move.getPlayStart().getX(),
+      move.getOrientation());
   }
 }

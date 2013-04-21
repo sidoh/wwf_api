@@ -108,8 +108,8 @@ public class StateReconstructor {
             }
 
             // If the tile was a blank, the next split will be what letter the blank was
-            // assigned to.
-            if ( stateHelper.tileIsBlank(tile) ) {
+            // assigned to. Only do this if it's a play (SWAP doesn't do this)
+            if ( move.getMoveType() == MoveType.PLAY && stateHelper.tileIsBlank(tile) ) {
               tile.getLetter().setValue(playedTiles[++i].toUpperCase());
             }
 

@@ -1,11 +1,16 @@
 package org.sidoh.wwf_api.game_state;
 
+import org.apache.thrift.TException;
 import org.sidoh.wwf_api.WwfApiTestCase;
+import org.sidoh.wwf_api.types.api.GameState;
+import org.sidoh.wwf_api.types.api.MoveData;
+import org.sidoh.wwf_api.types.api.MoveType;
 import org.sidoh.wwf_api.types.game_state.Letter;
 import org.sidoh.wwf_api.types.game_state.SlotModifier;
 import org.sidoh.wwf_api.types.game_state.Tile;
 import org.sidoh.wwf_api.types.game_state.WordOrientation;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.EnumSet;
 
@@ -102,5 +107,36 @@ public class TestWordsWithFriendsBoard extends WwfApiTestCase {
     WordsWithFriendsBoard board = new WordsWithFriendsBoard();
 
     assertResultEquals(59, playWord(board, 7, 7, "NAIVEST", WordOrientation.HORIZONTAL, true));
+  }
+
+  public void testGameStateScoring1() throws IOException, TException {
+    assertGameStateHasConsistentScores("4673715966.bin");
+  }
+
+  public void testGameStateScoring2() throws IOException, TException {
+    assertGameStateHasConsistentScores("4683202983.bin");
+  }
+
+  public void testGameStateScoring3() throws IOException, TException {
+    assertGameStateHasConsistentScores("4685541559.bin");
+  }
+
+  protected void assertGameStateHasConsistentScores(String stateFile) throws IOException, TException {
+    GameState state = loadGameState(stateFile);
+    WordsWithFriendsBoard board = new WordsWithFriendsBoard();
+
+    for (MoveData moveData : state.getAllMoves()) {
+      Move move = stateHelper.buildGameStateMove(moveData);
+
+      if ( move.getMoveType() == MoveType.PLAY ) {
+        board.move(move);
+        System.out.println(move);
+        System.out.println(board);
+
+        assertEquals("computed score and expected score should match",
+          moveData.getPoints(),
+          move.getResult().getScore());
+      }
+    }
   }
 }

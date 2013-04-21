@@ -1,3 +1,5 @@
 *.swo
 *.swp
+*.iml
+.DS_Store
 target

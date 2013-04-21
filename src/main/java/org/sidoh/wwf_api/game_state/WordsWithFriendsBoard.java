@@ -292,7 +292,7 @@ public class WordsWithFriendsBoard extends Board implements Cloneable {
         if (isWordModifier(slot.getModifier()))
           wordModifiers.add(slot.getModifier());
 
-        // Score adjacent words
+        // Score any adjacent words formed by placing this tile
         Move.Result result = scoreAdjacentWord(index, tile, opposite(orientation));
 
         // Sanity check

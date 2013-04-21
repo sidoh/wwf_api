@@ -430,8 +430,7 @@ public class WordsWithFriendsBoard extends Board implements Cloneable {
    * @param orientation vertical/horizontal
    * @return true if the provided location has any tiles next to it
    */
-  protected boolean hasAdjacentTiles(int row, int col, WordOrientation orientation) {
-
+  public boolean hasAdjacentTiles(int row, int col, WordOrientation orientation) {
     if (orientation == WordOrientation.HORIZONTAL) {
       return (col - 1 >= 0 && getSlot(row, col - 1).getTile() != null)
           || (col + 1 < DIMENSIONS && getSlot(row, col + 1).getTile() != null);
@@ -441,7 +440,15 @@ public class WordsWithFriendsBoard extends Board implements Cloneable {
     }
   }
 
-  protected boolean hasAdjacentTiles(Integer index, WordOrientation orientation) {
+  /**
+   * Convenience method used to determine if a provided location has tiles placed next to it in
+   * a particular orientation (either vertical or horizontal)
+   *
+   * @param index index of the slot in question
+   * @param orientation vertical/horizontal
+   * @return true if the provided location has any tiles next to it
+   */
+  public boolean hasAdjacentTiles(Integer index, WordOrientation orientation) {
     return hasAdjacentTiles(getRowFromIndex(index), getColFromIndex(index), orientation);
   }
 

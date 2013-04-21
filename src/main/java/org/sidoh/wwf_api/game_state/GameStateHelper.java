@@ -390,16 +390,23 @@ public class GameStateHelper {
    * @return
    */
   public Move buildGameStateMove(MoveData move, WordsWithFriendsBoard board) {
-    int row = move.getPlayStartPosition().getY();
-    int col = move.getPlayStartPosition().getX();
+    int startRow = move.getPlayStartPosition().getY();
+    int startCol = move.getPlayStartPosition().getX();
+    int endRow = move.getPlayEndPosition().getY();
+    int endCol = move.getPlayEndPosition().getX();
 
-    if (move.getTilesSize() > 1) {
-      return Move.play(move.getTiles(), row, col,
-          col < move.getPlayEndPosition().getX() ? WordOrientation.HORIZONTAL : WordOrientation.VERTICAL);
+    WordOrientation orientation;
+
+    if (startCol < endCol) {
+      orientation = WordOrientation.HORIZONTAL;
+    } else if (startRow < endRow) {
+      orientation = WordOrientation.VERTICAL;
+    } else if (board.hasAdjacentTiles(startRow, startCol, WordOrientation.HORIZONTAL)) {
+      orientation = WordOrientation.HORIZONTAL;
     } else {
-      return Move.play(move.getTiles(), row, col,
-          board.hasAdjacentTiles(row, col, WordOrientation.HORIZONTAL) ? WordOrientation.HORIZONTAL : WordOrientation.VERTICAL);
+      orientation = WordOrientation.VERTICAL;
     }
+    return Move.play(move.getTiles(), startRow, startCol, orientation);
   }
 
   /**

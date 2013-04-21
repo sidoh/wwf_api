@@ -14,8 +14,10 @@ import org.sidoh.wwf_api.types.game_state.Letter;
 import org.sidoh.wwf_api.types.game_state.Rack;
 import org.sidoh.wwf_api.types.game_state.Tile;
 import org.sidoh.wwf_api.types.game_state.WordOrientation;
+import org.sidoh.wwf_api.util.ThriftSerializationHelper;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,9 +64,8 @@ public class WwfApiTestCase extends TestCase {
 
     return result;
   }
-
   /**
-   * Reads a JSON game state from resources and applies it to a game state.
+   * Reads a game state from resources and applies it to a game state.
    *
    * @param filename
    * @return
@@ -72,7 +73,29 @@ public class WwfApiTestCase extends TestCase {
    * @throws TException
    */
   public static GameState loadGameState(String filename) throws IOException, TException {
-    FileReader stream = new FileReader(String.format("src/resources/game_states/%s", filename));
+    filename = String.format("src/test/resources/game_states/%s", filename);
+
+    if ( filename.endsWith(".json") ) {
+      return loadJsonGameState(filename);
+    }
+    else if ( filename.endsWith(".bin") ) {
+      return loadBinaryGameState(filename);
+    }
+    else {
+      throw new RuntimeException("Unknown file extension in: " + filename);
+    }
+  }
+
+  /**
+   * Load JSON game state
+   *
+   * @param filename
+   * @return
+   * @throws IOException
+   * @throws TException
+   */
+  public static GameState loadJsonGameState(String filename) throws IOException, TException {
+    FileReader stream = new FileReader(filename);
     TDeserializer deserializer = new TDeserializer(new TJSONProtocol.Factory());
     GameState state = new GameState();
 
@@ -90,6 +113,18 @@ public class WwfApiTestCase extends TestCase {
     return state;
   }
 
+  /**
+   * Load a binary game state
+   *
+   * @param filename
+   * @return
+   * @throws IOException
+   * @throws TException
+   */
+  public static GameState loadBinaryGameState(String filename) throws IOException, TException {
+    return ThriftSerializationHelper.getInstance().deserialize(new File(filename), new GameState());
+  }
+
   public static Rack buildRack(String letters) {
     Rack rack = new Rack().setCapacity(7);
 
@@ -102,6 +137,7 @@ public class WwfApiTestCase extends TestCase {
 
     return rack;
   }
+
 
   public static WordsWithFriendsBoard parseCsvBoard(String csv) {
     WordsWithFriendsBoard board = new WordsWithFriendsBoard();

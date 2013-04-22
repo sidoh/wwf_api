@@ -42,6 +42,22 @@ public class GameStateHelper {
   }
 
   /**
+   * Returns the user with the specified name, null if that user doesn't exist in the provided GameState
+   *
+   * @param state
+   * @param username
+   * @return
+   */
+  public User getUserFromUsername(GameState state, String username) {
+    for (User candidate : state.getMeta().getUsersById().values()) {
+      if (candidate.getName().equals(username)) {
+        return candidate;
+      }
+    }
+    return null;
+  }
+
+  /**
    * Compute the number of seconds elapsed since the specified timestamp
    *
    * @param timestamp

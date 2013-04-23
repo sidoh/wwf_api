@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
+import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
 import org.sidoh.wwf_api.types.api.ChatMessage;
 import org.sidoh.wwf_api.types.api.Coordinates;
 import org.sidoh.wwf_api.types.api.GameIndex;
@@ -233,9 +234,16 @@ public class ResponseParser {
     }
 
     if (moveJson.containsKey("from_x") && moveJson.get("from_x") != null) {
+      int fromX = (Integer)moveJson.get("from_x");
+
       move.setPlayStartPosition(new Coordinates()
-        .setX((Integer) moveJson.get("from_x"))
+        .setX(fromX)
         .setY((Integer) moveJson.get("from_y")));
+
+      // from_x can indicate special move types
+      if (fromX > WordsWithFriendsBoard.DIMENSIONS) {
+        move.setMoveType(fromXToMoveType(fromX));
+      }
     }
 
     if (moveJson.containsKey("to_x") && moveJson.get("to_x") != null) {
@@ -306,5 +314,32 @@ public class ResponseParser {
     else {
       throw new RuntimeException("Unsupported type: " + obj.getClass());
     }
+  }
+
+  /**
+   * Move types that aren't PASS or PLAY are encoded by setting from_x to a special value. This is
+   * a convenience method for getting the move type from the special from_x value.
+   *
+   * @param fromX
+   * @return
+   */
+  protected MoveType fromXToMoveType(int fromX) {
+    if (fromX == 101) {
+      return MoveType.SWAP;
+    }
+    else if (fromX == 96) {
+      return MoveType.TIE;
+    }
+    else if (fromX == 97) {
+      return MoveType.DECLINE;
+    }
+    else if (fromX == 99) {
+      return MoveType.RESIGN;
+    }
+    else if (fromX == 100) {
+      return MoveType.GAME_OVER;
+    }
+
+    throw new RuntimeException("Unknown fromX move type encoding: " + fromX);
   }
 }

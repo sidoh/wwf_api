@@ -322,7 +322,6 @@ public class ResponseParser {
    * @return
    */
   protected MoveType fromXToMoveType(MoveData data) {
-    LOG.info("Move data = {}", data);
     int fromX = data.getPlayStartPosition().getX()
       , fromY = data.getPlayStartPosition().getY()
       , toX   = data.getPlayEndPosition().getX()

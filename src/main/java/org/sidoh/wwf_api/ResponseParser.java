@@ -320,10 +320,15 @@ public class ResponseParser {
    * Move types that aren't PASS or PLAY are encoded by setting from_x to a special value. This is
    * a convenience method for getting the move type from the special from_x value.
    *
-   * @param fromX
+   * @param data
    * @return
    */
-  protected MoveType fromXToMoveType(int fromX) {
+  protected MoveType fromXToMoveType(MoveData data) {
+    int fromX = data.getPlayStartPosition().getX()
+      , fromY = data.getPlayStartPosition().getY()
+      , toX   = data.getPlayEndPosition().getX()
+      , toY   = data.getPlayEndPosition().getY();
+
     if (fromX == 101) {
       return MoveType.SWAP;
     }
@@ -338,6 +343,11 @@ public class ResponseParser {
     }
     else if (fromX == 100) {
       return MoveType.GAME_OVER;
+    }
+    // When no tiles are played, a pass is indicated by a PLAY with all the (x,y) stuff set to 0,
+    // and no words played.
+    else if (fromX == 0 && fromY == 0 && toX == 0 && toY == 0 && data.getWords().size() == 0) {
+      return MoveType.PASS;
     }
 
     throw new RuntimeException("Unknown fromX move type encoding: " + fromX);

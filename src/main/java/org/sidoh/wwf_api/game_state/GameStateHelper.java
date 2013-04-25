@@ -12,6 +12,8 @@ import org.sidoh.wwf_api.types.game_state.Rack;
 import org.sidoh.wwf_api.types.game_state.Slot;
 import org.sidoh.wwf_api.types.game_state.Tile;
 import org.sidoh.wwf_api.types.game_state.WordOrientation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -19,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class GameStateHelper {
+  private static final Logger LOG = LoggerFactory.getLogger(GameStateHelper.class);
   public static final SimpleDateFormat TIMESTAMP_DATE_FORMAT
     = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'+00:00'", Locale.GERMANY);
   private static GameStateHelper instance;

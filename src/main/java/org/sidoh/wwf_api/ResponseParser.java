@@ -233,6 +233,12 @@ public class ResponseParser {
         .setPoints((Integer) moveJson.get("points"));
     }
 
+    if (moveJson.containsKey("to_x") && moveJson.get("to_x") != null) {
+      move.setPlayEndPosition(new Coordinates()
+        .setX((Integer) moveJson.get("to_x"))
+        .setY((Integer) moveJson.get("to_y")));
+    }
+
     if (moveJson.containsKey("from_x") && moveJson.get("from_x") != null) {
       int fromX = (Integer)moveJson.get("from_x");
 
@@ -241,15 +247,7 @@ public class ResponseParser {
         .setY((Integer) moveJson.get("from_y")));
 
       // from_x can indicate special move types
-      if (fromX > WordsWithFriendsBoard.DIMENSIONS) {
-        move.setMoveType(fromXToMoveType(fromX));
-      }
-    }
-
-    if (moveJson.containsKey("to_x") && moveJson.get("to_x") != null) {
-      move.setPlayEndPosition(new Coordinates()
-        .setX((Integer) moveJson.get("to_x"))
-        .setY((Integer) moveJson.get("to_y")));
+      move.setMoveType(fromXToMoveType(move));
     }
 
     return move;
@@ -324,6 +322,7 @@ public class ResponseParser {
    * @return
    */
   protected MoveType fromXToMoveType(MoveData data) {
+    LOG.info("Move data = {}", data);
     int fromX = data.getPlayStartPosition().getX()
       , fromY = data.getPlayStartPosition().getY()
       , toX   = data.getPlayEndPosition().getX()
@@ -349,7 +348,8 @@ public class ResponseParser {
     else if (fromX == 0 && fromY == 0 && toX == 0 && toY == 0 && data.getWords().size() == 0) {
       return MoveType.PASS;
     }
-
-    throw new RuntimeException("Unknown fromX move type encoding: " + fromX);
+    else {
+      return data.getMoveType();
+    }
   }
 }

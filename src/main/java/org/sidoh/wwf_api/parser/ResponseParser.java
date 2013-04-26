@@ -1,10 +1,9 @@
-package org.sidoh.wwf_api;
+package org.sidoh.wwf_api.parser;
 
 import com.google.common.collect.Lists;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.JSONValue;
-import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
 import org.sidoh.wwf_api.types.api.ChatMessage;
 import org.sidoh.wwf_api.types.api.Coordinates;
 import org.sidoh.wwf_api.types.api.GameIndex;
@@ -19,9 +18,7 @@ import org.slf4j.LoggerFactory;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Responsible for parsing raw JSON returned by the Communication class and constructing
@@ -31,12 +28,35 @@ public class ResponseParser {
   private static final Logger LOG = LoggerFactory.getLogger(ResponseParser.class);
 
   /**
+   * Helper method to parse raw data. If there's an error parsing it, throw a ParserException.
    *
    * @param data
    * @return
+   * @throws ParserException
    */
-  public ChatMessage parseChatMessage(Reader data) {
-    JSONObject json = (JSONObject) JSONValue.parse(data);
+  protected Object parseRawData(Reader data) throws ParserException {
+    Object value =  JSONValue.parse(data);
+
+    if ( value == null ) {
+      throw new ParserException("Failure parsing response");
+    }
+
+    if ( value instanceof JSONObject ) {
+      return new SafeJSONObject((JSONObject) value);
+    }
+    else {
+      return value;
+    }
+  }
+
+  /**
+   *
+   * @param data
+   * @return
+   * @throws ParserException
+   */
+  public ChatMessage parseChatMessage(Reader data) throws ParserException {
+    JSONObject json = (JSONObject) parseRawData(data);
 
     return parseChatMessage(json);
   }
@@ -45,9 +65,11 @@ public class ResponseParser {
    *
    * @param data
    * @return
+   * @throws ParserException
    */
-  public List<ChatMessage> parseUnreadChats(Reader data) {
-    JSONObject json = (JSONObject) JSONValue.parse(data);
+  public List<ChatMessage> parseUnreadChats(Reader data) throws ParserException {
+    JSONObject json = (JSONObject) parseRawData(data);
+
     JSONArray chats = (JSONArray) json.get("chat_messages");
     List<ChatMessage> results = new ArrayList<ChatMessage>();
 
@@ -62,11 +84,12 @@ public class ResponseParser {
    *
    * @param response
    * @return
+   * @throws ParserException
    */
   public GameIndex parseGameIndex(Reader response) {
     GameIndex index = new GameIndex();
 
-    JSONObject gameIndex = (JSONObject) JSONValue.parse(response);
+    JSONObject gameIndex = (JSONObject) parseRawData(response);
     JSONArray games = (JSONArray) gameIndex.get("games");
 
     index.setUser(parseUser((JSONObject) gameIndex.get("user")));
@@ -85,9 +108,10 @@ public class ResponseParser {
    *
    * @param response
    * @return set of words that are NOT in the dictionary -- empty set if all are in the dictionary
+   * @throws ParserException
    */
   public List<String> parseDictionaryLookupResponse(Reader response) {
-    Object parsedResponse = JSONValue.parse(response);
+    Object parsedResponse = parseRawData(response);
 
     LOG.debug("Dictionary lookup response - " + parsedResponse);
 
@@ -115,11 +139,12 @@ public class ResponseParser {
    *
    * @param response
    * @return
+   * @throws ParserException
    */
   public GameState parseGameState(Reader response) {
     GameState state = new GameState();
 
-    JSONObject gameJson = (JSONObject) JSONValue.parse(response);
+    JSONObject gameJson = (JSONObject) parseRawData(response);
     gameJson = (JSONObject) gameJson.get("game");
     JSONArray movesArr = (JSONArray) gameJson.get("moves");
 
@@ -147,6 +172,7 @@ public class ResponseParser {
    *
    * @param gameJson
    * @return
+   * @throws ParserException
    */
   protected GameMeta parseGameMeta(JSONObject gameJson) {
     GameMeta game = new GameMeta();

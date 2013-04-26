@@ -1,11 +1,10 @@
 package org.sidoh.wwf_api;
 
-import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
+import org.sidoh.wwf_api.parser.ResponseParser;
 import org.sidoh.wwf_api.types.api.ChatMessage;
 import org.sidoh.wwf_api.types.api.GameIndex;
-import org.sidoh.wwf_api.types.api.GameMeta;
 import org.sidoh.wwf_api.types.api.GameState;
 import org.sidoh.wwf_api.types.api.MoveSubmission;
 import org.sidoh.wwf_api.types.api.MoveType;

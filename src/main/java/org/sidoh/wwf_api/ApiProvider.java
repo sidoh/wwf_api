@@ -2,6 +2,7 @@ package org.sidoh.wwf_api;
 
 import com.google.common.collect.Sets;
 import org.sidoh.wwf_api.game_state.WordsWithFriendsBoard;
+import org.sidoh.wwf_api.parser.ParserException;
 import org.sidoh.wwf_api.parser.ResponseParser;
 import org.sidoh.wwf_api.types.api.ChatMessage;
 import org.sidoh.wwf_api.types.api.GameIndex;
@@ -39,9 +40,9 @@ public class ApiProvider {
    * @param accessToken
    * @param gameId
    * @return
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public List<ChatMessage> getUnreadChats(String accessToken, long gameId) throws ApiRequestException {
+  public List<ChatMessage> getUnreadChats(String accessToken, long gameId) throws ApiRequestException, ParserException {
     return parser.parseUnreadChats(comm.getUnreadChats(accessToken, gameId));
   }
 
@@ -50,9 +51,9 @@ public class ApiProvider {
    *
    * @param accessToken
    * @return
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public GameIndex getGameIndex(String accessToken) throws ApiRequestException {
+  public GameIndex getGameIndex(String accessToken) throws ApiRequestException, ParserException {
     return parser.parseGameIndex(comm.getGameIndex(accessToken));
   }
 
@@ -62,9 +63,9 @@ public class ApiProvider {
    * @param accessToken
    * @param gameId
    * @return
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public GameState getGameState(String accessToken, long gameId) throws ApiRequestException {
+  public GameState getGameState(String accessToken, long gameId) throws ApiRequestException, ParserException {
     GameState raw = parser.parseGameState(comm.getGameState(gameId, accessToken));
 
     return stateReconstructor.reconstructState(raw);
@@ -77,9 +78,10 @@ public class ApiProvider {
    * @param state
    * @param move
    * @return
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public GameState makeMove(String accessToken, GameState state, MoveSubmission move) throws ApiRequestException, MoveValidationException {
+  public GameState makeMove(String accessToken, GameState state, MoveSubmission move)
+    throws ApiRequestException, ParserException, MoveValidationException {
     validateMove(state, move);
 
     LOG.info("submitting move: " + move);
@@ -93,9 +95,9 @@ public class ApiProvider {
    * Request the creation of a matchmaking game.
    *
    * @param accessToken
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public void createRandomGame(String accessToken) throws ApiRequestException {
+  public void createRandomGame(String accessToken) throws ApiRequestException, ParserException {
     LOG.info("creating random game...");
 
     comm.createRandomGame(accessToken);
@@ -106,9 +108,9 @@ public class ApiProvider {
    *
    * @param accessToken
    * @param userId
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public void createFacebookGame(String accessToken, long userId) throws ApiRequestException {
+  public void createFacebookGame(String accessToken, long userId) throws ApiRequestException, ParserException {
     LOG.info("creating game with user fb id = {}", userId);
 
     comm.createFacebookGame(accessToken, userId);
@@ -119,9 +121,9 @@ public class ApiProvider {
    *
    * @param accessToken
    * @param userId
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public void createZyngaGame(String accessToken, long userId) throws ApiRequestException {
+  public void createZyngaGame(String accessToken, long userId) throws ApiRequestException, ParserException {
     LOG.info("creating game with user id = {}", userId);
 
     comm.createZyngaGame(accessToken, userId);
@@ -134,9 +136,10 @@ public class ApiProvider {
    * @param gameId
    * @param message
    * @return
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public ChatMessage submitChatMessage(String accessToken, long gameId, String message) throws ApiRequestException {
+  public ChatMessage submitChatMessage(String accessToken, long gameId, String message)
+    throws ApiRequestException, ParserException {
     return parser.parseChatMessage(comm.submitChatMessage(accessToken, gameId, message));
   }
 
@@ -146,9 +149,10 @@ public class ApiProvider {
    * @param accessToken
    * @param words
    * @return set of words that are NOT in the dictionary -- empty set if all are in the dictionary
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public List<String> dictionaryLookup(String accessToken, List<String> words) throws ApiRequestException {
+  public List<String> dictionaryLookup(String accessToken, List<String> words)
+    throws ApiRequestException, ParserException {
     LOG.debug("Checking if the following words are in the WWF dictionary: " + words);
 
     return parser.parseDictionaryLookupResponse( comm.dictionaryLookup(words, accessToken) );
@@ -161,9 +165,9 @@ public class ApiProvider {
    * @param accessToken
    * @param timestamp
    * @return GameIndex with games having updates occurring after the provided timestamp
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public GameIndex getGamesWithUpdates(String accessToken, int timestamp) throws ApiRequestException {
+  public GameIndex getGamesWithUpdates(String accessToken, int timestamp) throws ApiRequestException, ParserException {
     return parser.parseGameIndex( comm.getGamesWithUpdates(accessToken, timestamp) );
   }
 

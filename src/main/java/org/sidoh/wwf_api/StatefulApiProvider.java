@@ -1,6 +1,7 @@
 package org.sidoh.wwf_api;
 
 import org.sidoh.wwf_api.game_state.GameStateHelper;
+import org.sidoh.wwf_api.parser.ParserException;
 import org.sidoh.wwf_api.types.api.ChatMessage;
 import org.sidoh.wwf_api.types.api.GameIndex;
 import org.sidoh.wwf_api.types.api.GameState;
@@ -30,9 +31,9 @@ public class StatefulApiProvider {
    *
    * @param gameId
    * @return
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public List<ChatMessage> getUnreadChats(long gameId) throws ApiRequestException {
+  public List<ChatMessage> getUnreadChats(long gameId) throws ApiRequestException, ParserException {
     return PROVIDER.getUnreadChats(accessToken, gameId);
   }
 
@@ -40,9 +41,9 @@ public class StatefulApiProvider {
    * Get a list of games.
    *
    * @return
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public GameIndex getGameIndex() throws ApiRequestException {
+  public GameIndex getGameIndex() throws ApiRequestException, ParserException {
     return PROVIDER.getGameIndex(accessToken);
   }
 
@@ -51,9 +52,9 @@ public class StatefulApiProvider {
    *
    * @param gameId
    * @return
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public GameState getGameState(long gameId) throws ApiRequestException {
+  public GameState getGameState(long gameId) throws ApiRequestException, ParserException {
     return PROVIDER.getGameState(accessToken, gameId);
   }
 
@@ -63,18 +64,19 @@ public class StatefulApiProvider {
    * @param state
    * @param move
    * @return
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public GameState makeMove(GameState state, MoveSubmission move) throws ApiRequestException {
+  public GameState makeMove(GameState state, MoveSubmission move)
+    throws ApiRequestException, MoveValidationException, ParserException {
     return PROVIDER.makeMove(accessToken, state, move);
   }
 
   /**
    * Request the creation of a matchmaking game.
    *
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public void createRandomGame() throws ApiRequestException {
+  public void createRandomGame() throws ApiRequestException, ParserException {
     PROVIDER.createRandomGame(accessToken);
   }
 
@@ -82,9 +84,9 @@ public class StatefulApiProvider {
    * Create a game versus a person with a particular facebook Id.
    *
    * @param userId
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public void createFacebookGame(long userId) throws ApiRequestException {
+  public void createFacebookGame(long userId) throws ApiRequestException, ParserException {
     PROVIDER.createFacebookGame(accessToken, userId);
   }
 
@@ -92,9 +94,9 @@ public class StatefulApiProvider {
    * Create a game versus a person with a particular Zynga Id.
    *
    * @param userId
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public void createZyngaGame(long userId) throws ApiRequestException {
+  public void createZyngaGame(long userId) throws ApiRequestException, ParserException {
     PROVIDER.createZyngaGame(accessToken, userId);
   }
 
@@ -104,9 +106,9 @@ public class StatefulApiProvider {
    * @param gameId
    * @param message
    * @return
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public ChatMessage submitChatMessage(long gameId, String message) throws ApiRequestException {
+  public ChatMessage submitChatMessage(long gameId, String message) throws ApiRequestException, ParserException {
     return PROVIDER.submitChatMessage(accessToken, gameId, message);
   }
 
@@ -115,9 +117,9 @@ public class StatefulApiProvider {
    *
    * @param words a list of words to look up
    * @return list of words that are NOT in the dictionary -- empty set if all are in the dictionary
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public List<String> dictionaryLookup(List<String> words) throws ApiRequestException {
+  public List<String> dictionaryLookup(List<String> words) throws ApiRequestException, ParserException {
     return PROVIDER.dictionaryLookup(accessToken, words);
   }
 
@@ -127,9 +129,9 @@ public class StatefulApiProvider {
    *
    * @param timestamp
    * @return GameIndex with games having updates occurring after the provided timestamp
-   * @throws ApiRequestException
+   * @throws ApiRequestException, ParserException
    */
-  public GameIndex getGamesWithUpdates(int timestamp) throws ApiRequestException {
+  public GameIndex getGamesWithUpdates(int timestamp) throws ApiRequestException, ParserException {
     return PROVIDER.getGamesWithUpdates(accessToken, timestamp);
   }
 }

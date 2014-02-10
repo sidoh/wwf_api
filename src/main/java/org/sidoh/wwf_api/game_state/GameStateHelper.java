@@ -400,13 +400,14 @@ public class GameStateHelper {
 
     // Pull initial tiles
     initialBag.pullTiles(WordsWithFriendsBoard.TILES_PER_PLAYER * 2);
+    int i = 0;
 
     for (MoveData moveData : state.getAllMoves()) {
       if (moveData.getMoveType() == MoveType.PLAY) {
         initialBag.pullTiles(Math.min(initialBag.getRemainingTiles().size(), moveData.getTiles().size()));
       }
       else if (moveData.getMoveType() == MoveType.SWAP) {
-        initialBag.pullTiles(moveData.getTiles().size());
+        initialBag.pullTiles(Math.min(initialBag.getRemainingTiles().size(), moveData.getTiles().size()));
         initialBag.returnTiles(moveData.getTiles());
       }
     }

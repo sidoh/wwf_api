@@ -400,7 +400,6 @@ public class GameStateHelper {
 
     // Pull initial tiles
     initialBag.pullTiles(WordsWithFriendsBoard.TILES_PER_PLAYER * 2);
-    int i = 0;
 
     for (MoveData moveData : state.getAllMoves()) {
       if (moveData.getMoveType() == MoveType.PLAY) {

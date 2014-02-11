@@ -102,6 +102,11 @@ public class StateReconstructor {
 
             playerTiles.remove(tile);
 
+            for (Tile tile1 : bag.getRemainingTiles()) {
+              System.out.print(tile1.getLetter().getValue() + " ");
+            }
+            System.out.println();
+
             if (playerTiles.size() == sizeBefore) {
               throw new RuntimeException("tried to remove: " + tile + " from: " + playerTiles
                 + ", but couldn't find it. This probably means someone is cheating");
@@ -115,6 +120,7 @@ public class StateReconstructor {
 
             // If this is a swap, put the tile back.
             if (move.getMoveType() == MoveType.SWAP) {
+              System.out.println(currentUser.getName() + " is swapping: " + tile.getLetter().getValue());
               returnedTiles.add(tile);
             }
             // If it was a play, put it on the board.
@@ -139,12 +145,22 @@ public class StateReconstructor {
           }
         }
 
-        // Give this player an appropriate number of tiles back
-        for (int i = 0; i < totalPlayedTiles && bag.tilesLeft(); i++) {
-          if (playerTiles.size() >= TILES_PER_PLAYER)
+        // Give this player an appropriate number of tiles back.
+        // Weird edge case occurs when swapping more tiles than are left in the bag.
+        // It appears that you draw the remaining tiles and then get returned ones back
+        // in the order you traded them.
+        for (int i = 0; i < totalPlayedTiles && (!returnedTiles.isEmpty() || bag.tilesLeft()); i++) {
+          if (playerTiles.size() >= TILES_PER_PLAYER) {
             throw new RuntimeException("tried to add more than 7 tiles to a rack");
+          }
 
-          playerTiles.add(bag.pullTile());
+          if (!bag.tilesLeft()) {
+            bag.returnTile(returnedTiles.remove(0));
+          }
+
+          Tile tile = bag.pullTile();
+          System.out.println("Giving player " + currentUser.getName() + " letter: " + tile.getLetter().getValue());
+          playerTiles.add(tile);
         }
 
         // Return tiles that were swapped

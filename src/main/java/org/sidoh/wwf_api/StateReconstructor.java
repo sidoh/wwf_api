@@ -102,11 +102,6 @@ public class StateReconstructor {
 
             playerTiles.remove(tile);
 
-            for (Tile tile1 : bag.getRemainingTiles()) {
-              System.out.print(tile1.getLetter().getValue() + " ");
-            }
-            System.out.println();
-
             if (playerTiles.size() == sizeBefore) {
               throw new RuntimeException("tried to remove: " + tile + " from: " + playerTiles
                 + ", but couldn't find it. This probably means someone is cheating");
@@ -159,7 +154,6 @@ public class StateReconstructor {
           }
 
           Tile tile = bag.pullTile();
-          System.out.println("Giving player " + currentUser.getName() + " letter: " + tile.getLetter().getValue());
           playerTiles.add(tile);
         }
 

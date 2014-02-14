@@ -67,6 +67,14 @@ public class StateReconstructor {
       // A list of tiles returned to the bag (done after replacing them)
       List<Tile> returnedTiles = Lists.newLinkedList();
 
+      LOG.debug("Move: {} {}, Bag: {}",
+          new Object[] {
+              move.getMoveType(),
+              move.getWords(),
+              bag
+          }
+      );
+
       // Only need to do anything if tiles are played/swapped
       if (move.getMoveType() == MoveType.PLAY || move.getMoveType() == MoveType.SWAP) {
         int x = move.isSetPlayStartPosition() ? move.getPlayStartPosition().getX() : 0;
@@ -115,7 +123,6 @@ public class StateReconstructor {
 
             // If this is a swap, put the tile back.
             if (move.getMoveType() == MoveType.SWAP) {
-              System.out.println(currentUser.getName() + " is swapping: " + tile.getLetter().getValue());
               returnedTiles.add(tile);
             }
             // If it was a play, put it on the board.
@@ -140,17 +147,17 @@ public class StateReconstructor {
           }
         }
 
+        // When swapping more tiles than remain, the tiles being returned are shuffled back into the
+        // bag before the new ones are drawn.
+        if (bag.getRemainingTiles().size() < totalPlayedTiles && returnedTiles.size() > 0) {
+          bag.returnTiles(returnedTiles);
+          returnedTiles.clear();
+        }
+
         // Give this player an appropriate number of tiles back.
-        // Weird edge case occurs when swapping more tiles than are left in the bag.
-        // It appears that you draw the remaining tiles and then get returned ones back
-        // in the order you traded them.
         for (int i = 0; i < totalPlayedTiles && (!returnedTiles.isEmpty() || bag.tilesLeft()); i++) {
           if (playerTiles.size() >= TILES_PER_PLAYER) {
             throw new RuntimeException("tried to add more than 7 tiles to a rack");
-          }
-
-          if (!bag.tilesLeft()) {
-            bag.returnTile(returnedTiles.remove(0));
           }
 
           Tile tile = bag.pullTile();

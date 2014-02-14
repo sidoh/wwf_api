@@ -177,4 +177,15 @@ public class Bag {
 
     return tile;
   }
+
+  @Override
+  public String toString() {
+    StringBuilder bag = new StringBuilder("[");
+    for (Tile tile : getRemainingTilesInPullOrder()) {
+      bag.append(" ");
+      bag.append(tile.getLetter().getValue());
+    }
+    bag.append(" ]");
+    return bag.toString();
+  }
 }
